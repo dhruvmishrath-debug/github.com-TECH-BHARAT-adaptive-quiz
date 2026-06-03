@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as ServicesRouteImport } from './routes/services'
 import { Route as ProcessRouteImport } from './routes/process'
 import { Route as PricingRouteImport } from './routes/pricing'
+import { Route as ExamplesRouteImport } from './routes/examples'
 import { Route as IndexRouteImport } from './routes/index'
 
 const ServicesRoute = ServicesRouteImport.update({
@@ -29,6 +30,11 @@ const PricingRoute = PricingRouteImport.update({
   path: '/pricing',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ExamplesRoute = ExamplesRouteImport.update({
+  id: '/examples',
+  path: '/examples',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -37,12 +43,14 @@ const IndexRoute = IndexRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/examples': typeof ExamplesRoute
   '/pricing': typeof PricingRoute
   '/process': typeof ProcessRoute
   '/services': typeof ServicesRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/examples': typeof ExamplesRoute
   '/pricing': typeof PricingRoute
   '/process': typeof ProcessRoute
   '/services': typeof ServicesRoute
@@ -50,20 +58,22 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/examples': typeof ExamplesRoute
   '/pricing': typeof PricingRoute
   '/process': typeof ProcessRoute
   '/services': typeof ServicesRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/pricing' | '/process' | '/services'
+  fullPaths: '/' | '/examples' | '/pricing' | '/process' | '/services'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/pricing' | '/process' | '/services'
-  id: '__root__' | '/' | '/pricing' | '/process' | '/services'
+  to: '/' | '/examples' | '/pricing' | '/process' | '/services'
+  id: '__root__' | '/' | '/examples' | '/pricing' | '/process' | '/services'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  ExamplesRoute: typeof ExamplesRoute
   PricingRoute: typeof PricingRoute
   ProcessRoute: typeof ProcessRoute
   ServicesRoute: typeof ServicesRoute
@@ -92,6 +102,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PricingRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/examples': {
+      id: '/examples'
+      path: '/examples'
+      fullPath: '/examples'
+      preLoaderRoute: typeof ExamplesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -104,6 +121,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  ExamplesRoute: ExamplesRoute,
   PricingRoute: PricingRoute,
   ProcessRoute: ProcessRoute,
   ServicesRoute: ServicesRoute,
