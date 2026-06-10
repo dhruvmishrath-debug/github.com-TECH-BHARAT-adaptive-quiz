@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as YoutubeToQuizRouteImport } from './routes/youtube-to-quiz'
 import { Route as StudyGuideRouteImport } from './routes/study-guide'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
+import { Route as FlashcardsRouteImport } from './routes/flashcards'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as IndexRouteImport } from './routes/index'
@@ -35,6 +36,11 @@ const StudyGuideRoute = StudyGuideRouteImport.update({
 const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
   id: '/sitemap.xml',
   path: '/sitemap.xml',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FlashcardsRoute = FlashcardsRouteImport.update({
+  id: '/flashcards',
+  path: '/flashcards',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuthRoute = AuthRouteImport.update({
@@ -86,6 +92,7 @@ const AuthenticatedQuizQuizIdRoute = AuthenticatedQuizQuizIdRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
+  '/flashcards': typeof FlashcardsRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/study-guide': typeof StudyGuideRoute
   '/youtube-to-quiz': typeof YoutubeToQuizRoute
@@ -99,6 +106,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
+  '/flashcards': typeof FlashcardsRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/study-guide': typeof StudyGuideRoute
   '/youtube-to-quiz': typeof YoutubeToQuizRoute
@@ -114,6 +122,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/auth': typeof AuthRoute
+  '/flashcards': typeof FlashcardsRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/study-guide': typeof StudyGuideRoute
   '/youtube-to-quiz': typeof YoutubeToQuizRoute
@@ -129,6 +138,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/auth'
+    | '/flashcards'
     | '/sitemap.xml'
     | '/study-guide'
     | '/youtube-to-quiz'
@@ -142,6 +152,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/auth'
+    | '/flashcards'
     | '/sitemap.xml'
     | '/study-guide'
     | '/youtube-to-quiz'
@@ -156,6 +167,7 @@ export interface FileRouteTypes {
     | '/'
     | '/_authenticated'
     | '/auth'
+    | '/flashcards'
     | '/sitemap.xml'
     | '/study-guide'
     | '/youtube-to-quiz'
@@ -171,6 +183,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   AuthRoute: typeof AuthRoute
+  FlashcardsRoute: typeof FlashcardsRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   StudyGuideRoute: typeof StudyGuideRoute
   YoutubeToQuizRoute: typeof YoutubeToQuizRoute
@@ -197,6 +210,13 @@ declare module '@tanstack/react-router' {
       path: '/sitemap.xml'
       fullPath: '/sitemap.xml'
       preLoaderRoute: typeof SitemapDotxmlRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/flashcards': {
+      id: '/flashcards'
+      path: '/flashcards'
+      fullPath: '/flashcards'
+      preLoaderRoute: typeof FlashcardsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/auth': {
@@ -290,6 +310,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   AuthRoute: AuthRoute,
+  FlashcardsRoute: FlashcardsRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   StudyGuideRoute: StudyGuideRoute,
   YoutubeToQuizRoute: YoutubeToQuizRoute,
@@ -297,3 +318,13 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
