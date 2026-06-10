@@ -38,6 +38,7 @@ type Quiz = {
 function Dashboard() {
   const [name, setName] = useState("");
   const [quizzes, setQuizzes] = useState<Quiz[]>([]);
+  const [totalQuizCount, setTotalQuizCount] = useState(0);
   const [avgScore, setAvgScore] = useState<number | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -45,11 +46,13 @@ function Dashboard() {
     (async () => {
       const { data: user } = await supabase.auth.getUser();
       setName((user.user?.user_metadata?.name as string) ?? "there");
-      const [{ data: q }, { data: a }] = await Promise.all([
+      const [{ data: q }, { data: a }, { count }] = await Promise.all([
         supabase.from("quizzes").select("*").order("created_at", { ascending: false }).limit(8),
         supabase.from("attempts").select("score"),
+        supabase.from("quizzes").select("*", { count: "exact", head: true }),
       ]);
       setQuizzes(q ?? []);
+      setTotalQuizCount(count ?? q?.length ?? 0);
       if (a && a.length > 0) {
         setAvgScore(a.reduce((s, r) => s + Number(r.score), 0) / a.length);
       }
@@ -74,7 +77,7 @@ function Dashboard() {
       </div>
 
       <div className="grid gap-4 md:grid-cols-3">
-        <StatCard icon={BookOpen} label="Quizzes generated" value={String(quizzes.length)} />
+        <StatCard icon={BookOpen} label="Quizzes generated" value={String(totalQuizCount)} />
         <StatCard
           icon={TrendingUp}
           label="Average score"

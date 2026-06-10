@@ -2,7 +2,7 @@ import { createFileRoute, Outlet, redirect, Link, useRouter } from "@tanstack/re
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
-import { Sparkles, LogOut } from "lucide-react";
+import { Sparkles, LogOut, Menu, X } from "lucide-react";
 
 export const Route = createFileRoute("/_authenticated")({
   ssr: false,
@@ -18,6 +18,7 @@ export const Route = createFileRoute("/_authenticated")({
 function AuthedLayout() {
   const router = useRouter();
   const [name, setName] = useState<string>("");
+  const [mobileOpen, setMobileOpen] = useState(false);
 
   useEffect(() => {
     supabase.auth.getUser().then(({ data }) => {
@@ -34,6 +35,13 @@ function AuthedLayout() {
     router.navigate({ to: "/auth", replace: true });
   }
 
+  const navLinks = [
+    { to: "/dashboard" as const, label: "Dashboard" },
+    { to: "/upload" as const, label: "New Quiz" },
+    { to: "/my-quizzes" as const, label: "My Quizzes" },
+    { to: "/history" as const, label: "History" },
+  ];
+
   return (
     <div className="min-h-screen">
       <header className="sticky top-0 z-40 border-b border-border/60 bg-background/80 backdrop-blur-md">
@@ -45,54 +53,53 @@ function AuthedLayout() {
             QuizGen
           </Link>
           <nav className="hidden gap-1 md:flex">
-            <Link
-              to="/dashboard"
-              className="rounded-md px-3 py-1.5 text-sm font-medium text-muted-foreground hover:bg-secondary hover:text-foreground"
-              activeProps={{
-                className:
-                  "rounded-md px-3 py-1.5 text-sm font-semibold bg-secondary text-foreground",
-              }}
-            >
-              Dashboard
-            </Link>
-            <Link
-              to="/upload"
-              className="rounded-md px-3 py-1.5 text-sm font-medium text-muted-foreground hover:bg-secondary hover:text-foreground"
-              activeProps={{
-                className:
-                  "rounded-md px-3 py-1.5 text-sm font-semibold bg-secondary text-foreground",
-              }}
-            >
-              New Quiz
-            </Link>
-            <Link
-              to="/my-quizzes"
-              className="rounded-md px-3 py-1.5 text-sm font-medium text-muted-foreground hover:bg-secondary hover:text-foreground"
-              activeProps={{
-                className:
-                  "rounded-md px-3 py-1.5 text-sm font-semibold bg-secondary text-foreground",
-              }}
-            >
-              My Quizzes
-            </Link>
-            <Link
-              to="/history"
-              className="rounded-md px-3 py-1.5 text-sm font-medium text-muted-foreground hover:bg-secondary hover:text-foreground"
-              activeProps={{
-                className:
-                  "rounded-md px-3 py-1.5 text-sm font-semibold bg-secondary text-foreground",
-              }}
-            >
-              History
-            </Link>
+            {navLinks.map((link) => (
+              <Link
+                key={link.to}
+                to={link.to}
+                className="rounded-md px-3 py-1.5 text-sm font-medium text-muted-foreground hover:bg-secondary hover:text-foreground"
+                activeProps={{
+                  className:
+                    "rounded-md px-3 py-1.5 text-sm font-semibold bg-secondary text-foreground",
+                }}
+                onClick={() => setMobileOpen(false)}
+              >
+                {link.label}
+              </Link>
+            ))}
           </nav>
           <div className="flex items-center gap-2">
             <span className="hidden text-sm text-muted-foreground sm:inline">{name}</span>
             <Button variant="ghost" size="sm" onClick={signOut} aria-label="Sign out">
               <LogOut className="h-4 w-4" />
             </Button>
+            <button
+              className="grid h-9 w-9 place-items-center rounded-lg border border-border bg-card md:hidden"
+              aria-label={mobileOpen ? "Close menu" : "Open menu"}
+              onClick={() => setMobileOpen(!mobileOpen)}
+            >
+              {mobileOpen ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
+            </button>
           </div>
         </div>
+        {mobileOpen && (
+          <nav className="flex flex-col gap-1 border-t border-border/40 bg-background px-4 pb-3 pt-2 md:hidden">
+            {navLinks.map((link) => (
+              <Link
+                key={link.to}
+                to={link.to}
+                className="rounded-md px-3 py-2 text-sm font-medium text-muted-foreground hover:bg-secondary hover:text-foreground"
+                activeProps={{
+                  className:
+                    "rounded-md px-3 py-2 text-sm font-semibold bg-secondary text-foreground",
+                }}
+                onClick={() => setMobileOpen(false)}
+              >
+                {link.label}
+              </Link>
+            ))}
+          </nav>
+        )}
       </header>
       <main className="mx-auto max-w-6xl px-4 py-8">
         <Outlet />

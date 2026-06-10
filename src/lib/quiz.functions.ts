@@ -13,18 +13,12 @@ const GenerateInput = z.object({
 });
 
 function trimToWords(text: string, max: number): string {
-  const words = text.trim().split(/\s+/);
-  return words.length <= max ? text : words.slice(0, max).join(" ");
+  const trimmed = text.trim();
+  const words = trimmed.split(/\s+/);
+  return words.length <= max ? trimmed : words.slice(0, max).join(" ");
 }
 
-function extractJson(raw: string): unknown {
-  // Strip code fences and find first [ ... ]
-  const cleaned = raw.replace(/```json|```/g, "").trim();
-  const first = cleaned.indexOf("[");
-  const last = cleaned.lastIndexOf("]");
-  if (first === -1 || last === -1) throw new Error("AI did not return JSON array");
-  return JSON.parse(cleaned.slice(first, last + 1));
-}
+
 
 const QuestionSchema = z.object({
   question: z.string().min(3),
@@ -35,7 +29,7 @@ const QuestionSchema = z.object({
 
 export const generateQuiz = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
-  .inputValidator((input: unknown) => GenerateInput.parse(input))
+  .validator((input: unknown) => GenerateInput.parse(input))
   .handler(async ({ data, context }) => {
     const key = process.env.LOVABLE_API_KEY;
     if (!key) throw new Error("AI is not configured. Please try again later.");
@@ -109,7 +103,7 @@ const SubmitInput = z.object({
 
 export const submitQuiz = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
-  .inputValidator((input: unknown) => SubmitInput.parse(input))
+  .validator((input: unknown) => SubmitInput.parse(input))
   .handler(async ({ data, context }) => {
     const { supabase, userId } = context;
     const { data: questions, error: qErr } = await supabase
@@ -154,7 +148,7 @@ export const submitQuiz = createServerFn({ method: "POST" })
 
 export const deleteQuiz = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
-  .inputValidator((input: unknown) => z.object({ quizId: z.string().uuid() }).parse(input))
+  .validator((input: unknown) => z.object({ quizId: z.string().uuid() }).parse(input))
   .handler(async ({ data, context }) => {
     const { error } = await context.supabase.from("quizzes").delete().eq("id", data.quizId);
     if (error) throw new Error(error.message);

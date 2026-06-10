@@ -6,7 +6,6 @@ import {
   Brain,
   Trophy,
   ArrowRight,
-  Search,
   CheckCircle2,
   BookOpen,
   FileText,
@@ -14,8 +13,11 @@ import {
   Clock,
   Award,
   Zap,
+  Menu,
+  X,
 } from "lucide-react";
 import { motion } from "framer-motion";
+import { useState } from "react";
 import heroStudent from "@/assets/hero-student.png";
 import advisorStudent from "@/assets/advisor-student.png";
 
@@ -94,51 +96,83 @@ const advisors = [
 ];
 
 function Landing() {
+  const [mobileOpen, setMobileOpen] = useState(false);
+
   return (
     <div className="min-h-screen">
       {/* Top accent bar like Educax */}
       <div className="h-9 bg-gradient-primary" />
 
-      <header className="mx-auto flex max-w-6xl items-center justify-between px-4 py-5">
-        <Link to="/" className="flex items-center gap-2 font-display text-xl font-extrabold">
-          <span className="grid h-10 w-10 place-items-center rounded-2xl bg-gradient-primary text-primary-foreground shadow-pop">
-            <Sparkles className="h-5 w-5" />
-          </span>
-          QuizGen
-        </Link>
-        <nav className="hidden items-center gap-7 text-sm font-semibold text-foreground/80 md:flex">
-          <a href="#how" className="hover:text-primary">
-            How it works
-          </a>
-          <a href="#categories" className="hover:text-primary">
-            What you can study
-          </a>
-          <Link to="/study-guide" className="hover:text-primary">
-            Study Guide
+      <header className="relative mx-auto max-w-6xl px-4 py-5">
+        <div className="flex items-center justify-between">
+          <Link to="/" className="flex items-center gap-2 font-display text-xl font-extrabold">
+            <span className="grid h-10 w-10 place-items-center rounded-2xl bg-gradient-primary text-primary-foreground shadow-pop">
+              <Sparkles className="h-5 w-5" />
+            </span>
+            QuizGen
           </Link>
-          <Link to="/flashcards" className="hover:text-primary">
-            Flashcards
-          </Link>
-          <Link to="/youtube-to-quiz" className="hover:text-primary">
-            YouTube → Quiz
-          </Link>
-          <a href="#features" className="hover:text-primary">
-            Features
-          </a>
-        </nav>
-        <div className="flex items-center gap-2">
-          <button
-            className="hidden h-10 w-10 place-items-center rounded-xl border border-border bg-card md:grid"
-            aria-label="Search"
-          >
-            <Search className="h-4 w-4" />
-          </button>
-          <Link to="/auth">
-            <Button className="rounded-xl bg-primary text-primary-foreground shadow-pop hover:bg-primary/90">
-              Register <ArrowRight className="ml-1 h-4 w-4" />
-            </Button>
-          </Link>
+          <nav className="hidden items-center gap-7 text-sm font-semibold text-foreground/80 md:flex">
+            <a href="#how" className="hover:text-primary">
+              How it works
+            </a>
+            <a href="#categories" className="hover:text-primary">
+              What you can study
+            </a>
+            <Link to="/study-guide" className="hover:text-primary">
+              Study Guide
+            </Link>
+            <Link to="/flashcards" className="hover:text-primary">
+              Flashcards
+            </Link>
+            <Link to="/youtube-to-quiz" className="hover:text-primary">
+              YouTube → Quiz
+            </Link>
+            <a href="#features" className="hover:text-primary">
+              Features
+            </a>
+          </nav>
+          <div className="flex items-center gap-2">
+            <Link to="/auth" className="hidden md:inline-flex">
+              <Button className="rounded-xl bg-primary text-primary-foreground shadow-pop hover:bg-primary/90">
+                Register <ArrowRight className="ml-1 h-4 w-4" />
+              </Button>
+            </Link>
+            <button
+              className="grid h-10 w-10 place-items-center rounded-xl border border-border bg-card md:hidden"
+              aria-label={mobileOpen ? "Close menu" : "Open menu"}
+              onClick={() => setMobileOpen(!mobileOpen)}
+            >
+              {mobileOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+            </button>
+          </div>
         </div>
+        {mobileOpen && (
+          <nav className="mt-4 flex flex-col gap-3 rounded-2xl border border-border bg-card p-4 shadow-soft md:hidden">
+            <a href="#how" className="text-sm font-semibold hover:text-primary" onClick={() => setMobileOpen(false)}>
+              How it works
+            </a>
+            <a href="#categories" className="text-sm font-semibold hover:text-primary" onClick={() => setMobileOpen(false)}>
+              What you can study
+            </a>
+            <Link to="/study-guide" className="text-sm font-semibold hover:text-primary" onClick={() => setMobileOpen(false)}>
+              Study Guide
+            </Link>
+            <Link to="/flashcards" className="text-sm font-semibold hover:text-primary" onClick={() => setMobileOpen(false)}>
+              Flashcards
+            </Link>
+            <Link to="/youtube-to-quiz" className="text-sm font-semibold hover:text-primary" onClick={() => setMobileOpen(false)}>
+              YouTube → Quiz
+            </Link>
+            <a href="#features" className="text-sm font-semibold hover:text-primary" onClick={() => setMobileOpen(false)}>
+              Features
+            </a>
+            <Link to="/auth" onClick={() => setMobileOpen(false)}>
+              <Button className="w-full rounded-xl bg-primary text-primary-foreground shadow-pop hover:bg-primary/90">
+                Register <ArrowRight className="ml-1 h-4 w-4" />
+              </Button>
+            </Link>
+          </nav>
+        )}
       </header>
 
       {/* HERO */}

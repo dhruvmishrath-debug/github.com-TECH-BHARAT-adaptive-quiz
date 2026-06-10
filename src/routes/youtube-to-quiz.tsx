@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
-import { Sparkles, Youtube, ArrowRight, Check, X, Play } from "lucide-react";
+import { Sparkles, Youtube, ArrowRight, Check, X, Play, Menu } from "lucide-react";
 
 export const Route = createFileRoute("/youtube-to-quiz")({
   head: () => ({
@@ -74,6 +74,7 @@ function YouTubeToQuizPage() {
   const [quiz, setQuiz] = useState<YouTubeQuiz | null>(null);
   const [picks, setPicks] = useState<Record<number, number>>({});
   const [showAnswers, setShowAnswers] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
 
   const videoId = extractVideoId(url);
 
@@ -111,29 +112,61 @@ function YouTubeToQuizPage() {
     <div className="min-h-screen">
       <div className="h-9 bg-gradient-primary" />
 
-      <header className="mx-auto flex max-w-5xl items-center justify-between px-4 py-5">
-        <Link to="/" className="flex items-center gap-2 font-display text-xl font-extrabold">
-          <span className="grid h-10 w-10 place-items-center rounded-2xl bg-gradient-primary text-primary-foreground shadow-pop">
-            <Sparkles className="h-5 w-5" />
-          </span>
-          QuizGen
-        </Link>
-        <nav className="hidden items-center gap-6 text-sm font-semibold text-foreground/80 md:flex">
-          <Link to="/" className="hover:text-primary">
-            Home
+      <header className="relative mx-auto max-w-5xl px-4 py-5">
+        <div className="flex items-center justify-between">
+          <Link to="/" className="flex items-center gap-2 font-display text-xl font-extrabold">
+            <span className="grid h-10 w-10 place-items-center rounded-2xl bg-gradient-primary text-primary-foreground shadow-pop">
+              <Sparkles className="h-5 w-5" />
+            </span>
+            QuizGen
           </Link>
-          <Link to="/study-guide" className="hover:text-primary">
-            Study Guide
-          </Link>
-          <Link to="/auth" className="hover:text-primary">
-            Sign in
-          </Link>
-        </nav>
-        <Link to="/auth">
-          <Button className="rounded-xl">
-            Get started <ArrowRight className="ml-1 h-4 w-4" />
-          </Button>
-        </Link>
+          <nav className="hidden items-center gap-6 text-sm font-semibold text-foreground/80 md:flex">
+            <Link to="/" className="hover:text-primary">
+              Home
+            </Link>
+            <Link to="/study-guide" className="hover:text-primary">
+              Study Guide
+            </Link>
+            <Link to="/youtube-to-quiz" className="text-primary">
+              YouTube → Quiz
+            </Link>
+            <Link to="/auth" className="hover:text-primary">
+              Sign in
+            </Link>
+          </nav>
+          <div className="flex items-center gap-2">
+            <Link to="/auth" className="hidden md:inline-flex">
+              <Button className="rounded-xl">
+                Get started <ArrowRight className="ml-1 h-4 w-4" />
+              </Button>
+            </Link>
+            <button
+              className="grid h-10 w-10 place-items-center rounded-xl border border-border bg-card md:hidden"
+              aria-label={mobileOpen ? "Close menu" : "Open menu"}
+              onClick={() => setMobileOpen(!mobileOpen)}
+            >
+              {mobileOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+            </button>
+          </div>
+        </div>
+        {mobileOpen && (
+          <nav className="mt-4 flex flex-col gap-3 rounded-2xl border border-border bg-card p-4 shadow-soft md:hidden">
+            <Link to="/" className="text-sm font-semibold hover:text-primary" onClick={() => setMobileOpen(false)}>
+              Home
+            </Link>
+            <Link to="/study-guide" className="text-sm font-semibold hover:text-primary" onClick={() => setMobileOpen(false)}>
+              Study Guide
+            </Link>
+            <Link to="/youtube-to-quiz" className="text-sm font-semibold text-primary" onClick={() => setMobileOpen(false)}>
+              YouTube → Quiz
+            </Link>
+            <Link to="/auth" onClick={() => setMobileOpen(false)}>
+              <Button className="w-full rounded-xl">
+                Get started <ArrowRight className="ml-1 h-4 w-4" />
+              </Button>
+            </Link>
+          </nav>
+        )}
       </header>
 
       <section className="mx-auto max-w-3xl px-4 pt-6 pb-10 text-center">

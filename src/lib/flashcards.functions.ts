@@ -18,12 +18,13 @@ const FlashcardSchema = z.object({
 export type Flashcard = z.infer<typeof FlashcardSchema>;
 
 function trimToWords(text: string, max: number): string {
-  const words = text.trim().split(/\s+/);
-  return words.length <= max ? text : words.slice(0, max).join(" ");
+  const trimmed = text.trim();
+  const words = trimmed.split(/\s+/);
+  return words.length <= max ? trimmed : words.slice(0, max).join(" ");
 }
 
 export const generateFlashcards = createServerFn({ method: "POST" })
-  .inputValidator((input: unknown) => GenerateInput.parse(input))
+  .validator((input: unknown) => GenerateInput.parse(input))
   .handler(async ({ data }): Promise<{ title: string; cards: Flashcard[] }> => {
     const key = process.env.LOVABLE_API_KEY;
     if (!key) throw new Error("AI is not configured. Please try again later.");
