@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://lnct-tech-bharat.lovable.app/sitemap.xml
+Sitemap: https://worker-devloper.lovable.app/sitemap.xml
