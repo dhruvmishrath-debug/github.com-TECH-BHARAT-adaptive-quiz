@@ -11,8 +11,6 @@ import { useEffect, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
-import { Nav } from "../components/site/Nav";
-import { Footer } from "../components/site/Footer";
 
 function NotFoundComponent() {
   return (
@@ -79,24 +77,22 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Northbound — Custom websites built in a weekend" },
-      { name: "description", content: "We design and build custom websites for local businesses. Delivered in days, not months. See it before you pay." },
-      { property: "og:title", content: "Northbound — Custom websites built in a weekend" },
-      { property: "og:description", content: "We design and build custom websites for local businesses. Delivered in days, not months." },
+      { title: "QuizGen — Adaptive Quiz Generator from Your Notes" },
+      { name: "description", content: "Upload your study notes and let AI generate adaptive multiple-choice quizzes with instant scoring and explanations." },
+      { property: "og:title", content: "QuizGen — Adaptive Quiz Generator from Your Notes" },
+      { property: "og:description", content: "Upload your study notes and let AI generate adaptive multiple-choice quizzes with instant scoring and explanations." },
       { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary" },
+      { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:title", content: "QuizGen — Adaptive Quiz Generator from Your Notes" },
+      { name: "twitter:description", content: "Upload your study notes and let AI generate adaptive multiple-choice quizzes with instant scoring and explanations." },
+      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/91fc3158-d484-4c31-8ecb-792e64ec06ac/id-preview-8751a79c--7d9c3775-3f49-422f-9a6e-7458d502845f.lovable.app-1780984999159.png" },
+      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/91fc3158-d484-4c31-8ecb-792e64ec06ac/id-preview-8751a79c--7d9c3775-3f49-422f-9a6e-7458d502845f.lovable.app-1780984999159.png" },
     ],
     links: [
-      {
-        rel: "stylesheet",
-        href: appCss,
-      },
+      { rel: "stylesheet", href: appCss },
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
-      {
-        rel: "stylesheet",
-        href: "https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&display=swap",
-      },
+      { rel: "stylesheet", href: "https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700;9..144,900&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" },
     ],
   }),
   shellComponent: RootShell,
@@ -124,14 +120,8 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <div className="flex min-h-screen flex-col">
-        <Nav />
-        <main className="flex-1">
-          {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
-          <Outlet />
-        </main>
-        <Footer />
-      </div>
+      {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
+      <Outlet />
     </QueryClientProvider>
   );
 }

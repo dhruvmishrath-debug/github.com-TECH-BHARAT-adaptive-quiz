@@ -1,0 +1,12 @@
+# QuizGen
+
+> QuizGen turns your study notes into adaptive AI-generated multiple-choice quizzes with instant scoring and explanations.
+
+QuizGen is a study tool for students. Upload a PDF or paste your notes, choose difficulty and length, and get a quiz in seconds. Every attempt is scored instantly and saved to your history so you can track progress.
+
+## Pages
+
+- [Home](/): Product overview, how it works, and features.
+- [Study Guide Generator](/study-guide): Free AI tool that turns notes or PDFs into key concepts, definitions, summary points, and practice questions.
+- [YouTube to Quiz](/youtube-to-quiz): Free AI tool that turns any YouTube lecture or tutorial into a multiple-choice practice quiz.
+- [Sign in / Sign up](/auth): Create an account or log in to start generating quizzes.
