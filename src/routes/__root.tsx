@@ -77,36 +77,9 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "QuizGen — Adaptive Quiz Generator from Your Notes" },
-      {
-        name: "description",
-        content:
-          "Upload your study notes and let AI generate adaptive multiple-choice quizzes with instant scoring and explanations.",
-      },
-      { property: "og:title", content: "QuizGen — Adaptive Quiz Generator from Your Notes" },
-      {
-        property: "og:description",
-        content:
-          "Upload your study notes and let AI generate adaptive multiple-choice quizzes with instant scoring and explanations.",
-      },
       { property: "og:type", content: "website" },
+      { property: "og:site_name", content: "QuizGen" },
       { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:title", content: "QuizGen — Adaptive Quiz Generator from Your Notes" },
-      {
-        name: "twitter:description",
-        content:
-          "Upload your study notes and let AI generate adaptive multiple-choice quizzes with instant scoring and explanations.",
-      },
-      {
-        property: "og:image",
-        content:
-          "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/91fc3158-d484-4c31-8ecb-792e64ec06ac/id-preview-8751a79c--7d9c3775-3f49-422f-9a6e-7458d502845f.lovable.app-1780984999159.png",
-      },
-      {
-        name: "twitter:image",
-        content:
-          "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/91fc3158-d484-4c31-8ecb-792e64ec06ac/id-preview-8751a79c--7d9c3775-3f49-422f-9a6e-7458d502845f.lovable.app-1780984999159.png",
-      },
     ],
     links: [
       { rel: "stylesheet", href: appCss },
