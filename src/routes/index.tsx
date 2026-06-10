@@ -116,6 +116,9 @@ function Landing() {
           <Link to="/study-guide" className="hover:text-primary">
             Study Guide
           </Link>
+          <Link to="/flashcards" className="hover:text-primary">
+            Flashcards
+          </Link>
           <Link to="/youtube-to-quiz" className="hover:text-primary">
             YouTube → Quiz
           </Link>
