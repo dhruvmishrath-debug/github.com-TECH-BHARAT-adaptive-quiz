@@ -1,6 +1,20 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Button } from "@/components/ui/button";
-import { Sparkles, FileUp, Brain, Trophy, ArrowRight, Search, CheckCircle2, BookOpen, FileText, Target, Clock, Award, Zap } from "lucide-react";
+import {
+  Sparkles,
+  FileUp,
+  Brain,
+  Trophy,
+  ArrowRight,
+  Search,
+  CheckCircle2,
+  BookOpen,
+  FileText,
+  Target,
+  Clock,
+  Award,
+  Zap,
+} from "lucide-react";
 import { motion } from "framer-motion";
 import heroStudent from "@/assets/hero-student.png";
 import advisorStudent from "@/assets/advisor-student.png";
@@ -9,14 +23,19 @@ export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
       { title: "QuizGen — Turn Your Notes into Smart Quizzes" },
-      { name: "description", content: "Upload PDFs or paste your notes. QuizGen builds adaptive quizzes, grades you instantly, and explains every answer — the modern way to study." },
+      {
+        name: "description",
+        content:
+          "Upload PDFs or paste your notes. QuizGen builds adaptive quizzes, grades you instantly, and explains every answer — the modern way to study.",
+      },
       { property: "og:title", content: "QuizGen — Study Smarter with AI Quizzes" },
-      { property: "og:description", content: "AI study companion. Upload notes, get quizzes, track progress." },
+      {
+        property: "og:description",
+        content: "AI study companion. Upload notes, get quizzes, track progress.",
+      },
       { property: "og:url", content: "https://lnct-tech-bharat.lovable.app/" },
     ],
-    links: [
-      { rel: "canonical", href: "https://lnct-tech-bharat.lovable.app/" },
-    ],
+    links: [{ rel: "canonical", href: "https://lnct-tech-bharat.lovable.app/" }],
     scripts: [
       {
         type: "application/ld+json",
@@ -32,7 +51,8 @@ export const Route = createFileRoute("/")({
               "@type": "WebSite",
               name: "QuizGen",
               url: "https://lnct-tech-bharat.lovable.app/",
-              description: "Upload PDFs or paste your notes. QuizGen builds adaptive quizzes, grades you instantly, and explains every answer.",
+              description:
+                "Upload PDFs or paste your notes. QuizGen builds adaptive quizzes, grades you instantly, and explains every answer.",
             },
           ],
         }),
@@ -51,10 +71,26 @@ const categories = [
 ];
 
 const advisors = [
-  { icon: CheckCircle2, title: "Adaptive Questions", desc: "Easy, Medium, Hard or Mixed — every quiz fits your level." },
-  { icon: Award, title: "Instant Grading", desc: "See your score the moment you submit, every answer explained." },
-  { icon: Clock, title: "Study Anywhere", desc: "Your notes, quizzes, and history travel with you in the cloud." },
-  { icon: Trophy, title: "Track Progress", desc: "A complete history of every attempt, score, and time taken." },
+  {
+    icon: CheckCircle2,
+    title: "Adaptive Questions",
+    desc: "Easy, Medium, Hard or Mixed — every quiz fits your level.",
+  },
+  {
+    icon: Award,
+    title: "Instant Grading",
+    desc: "See your score the moment you submit, every answer explained.",
+  },
+  {
+    icon: Clock,
+    title: "Study Anywhere",
+    desc: "Your notes, quizzes, and history travel with you in the cloud.",
+  },
+  {
+    icon: Trophy,
+    title: "Track Progress",
+    desc: "A complete history of every attempt, score, and time taken.",
+  },
 ];
 
 function Landing() {
@@ -71,14 +107,27 @@ function Landing() {
           QuizGen
         </Link>
         <nav className="hidden items-center gap-7 text-sm font-semibold text-foreground/80 md:flex">
-          <a href="#how" className="hover:text-primary">How it works</a>
-          <a href="#categories" className="hover:text-primary">What you can study</a>
-          <Link to="/study-guide" className="hover:text-primary">Study Guide</Link>
-          <Link to="/youtube-to-quiz" className="hover:text-primary">YouTube → Quiz</Link>
-          <a href="#features" className="hover:text-primary">Features</a>
+          <a href="#how" className="hover:text-primary">
+            How it works
+          </a>
+          <a href="#categories" className="hover:text-primary">
+            What you can study
+          </a>
+          <Link to="/study-guide" className="hover:text-primary">
+            Study Guide
+          </Link>
+          <Link to="/youtube-to-quiz" className="hover:text-primary">
+            YouTube → Quiz
+          </Link>
+          <a href="#features" className="hover:text-primary">
+            Features
+          </a>
         </nav>
         <div className="flex items-center gap-2">
-          <button className="hidden h-10 w-10 place-items-center rounded-xl border border-border bg-card md:grid" aria-label="Search">
+          <button
+            className="hidden h-10 w-10 place-items-center rounded-xl border border-border bg-card md:grid"
+            aria-label="Search"
+          >
             <Search className="h-4 w-4" />
           </button>
           <Link to="/auth">
@@ -104,11 +153,15 @@ function Landing() {
               The Smartest Way to <span className="text-primary">Turn Notes</span> Into Quizzes
             </h1>
             <p className="mt-5 max-w-md text-base text-muted-foreground">
-              "Our mission is to help every student learn faster — upload your notes and let AI build the perfect quiz for you, anywhere, anytime."
+              "Our mission is to help every student learn faster — upload your notes and let AI
+              build the perfect quiz for you, anywhere, anytime."
             </p>
             <div className="mt-7 flex flex-wrap items-center gap-3">
               <Link to="/auth" search={{ mode: "signup" } as never}>
-                <Button size="lg" className="rounded-xl bg-primary px-6 text-primary-foreground shadow-pop hover:bg-primary/90">
+                <Button
+                  size="lg"
+                  className="rounded-xl bg-primary px-6 text-primary-foreground shadow-pop hover:bg-primary/90"
+                >
                   Get Started <ArrowRight className="ml-2 h-4 w-4" />
                 </Button>
               </Link>
@@ -127,8 +180,19 @@ function Landing() {
             className="relative mx-auto w-full max-w-md"
           >
             {/* Coral doodle blob */}
-            <svg viewBox="0 0 400 400" className="absolute inset-0 -z-10 h-full w-full" aria-hidden="true">
-              <path d="M200 30 C310 30 380 110 380 220 C380 320 300 380 200 380 C100 380 20 320 20 220 C20 110 90 30 200 30 Z" fill="none" stroke="oklch(0.78 0.16 30)" strokeWidth="3" strokeDasharray="2 0" opacity="0.65" />
+            <svg
+              viewBox="0 0 400 400"
+              className="absolute inset-0 -z-10 h-full w-full"
+              aria-hidden="true"
+            >
+              <path
+                d="M200 30 C310 30 380 110 380 220 C380 320 300 380 200 380 C100 380 20 320 20 220 C20 110 90 30 200 30 Z"
+                fill="none"
+                stroke="oklch(0.78 0.16 30)"
+                strokeWidth="3"
+                strokeDasharray="2 0"
+                opacity="0.65"
+              />
             </svg>
             {/* Sparkle doodles */}
             <Sparkles className="absolute -left-2 top-4 h-7 w-7 text-accent" />
@@ -148,13 +212,25 @@ function Landing() {
       {/* Trust bar */}
       <section className="border-y border-border/60 bg-card/50 backdrop-blur">
         <div className="mx-auto max-w-6xl px-4 py-8">
-          <p className="text-center text-sm font-medium text-muted-foreground">Trusted by students from 1,000+ schools & universities</p>
+          <p className="text-center text-sm font-medium text-muted-foreground">
+            Trusted by students from 1,000+ schools & universities
+          </p>
           <div className="mt-5 flex flex-wrap items-center justify-center gap-x-10 gap-y-4 text-base font-bold text-foreground/70">
-            <span className="flex items-center gap-2"><span className="h-3 w-3 rounded-sm bg-primary" /> Cambridge</span>
-            <span className="flex items-center gap-2"><Zap className="h-4 w-4 text-accent" /> MIT Prep</span>
-            <span className="flex items-center gap-2"><span className="h-3 w-3 rounded-full bg-accent" /> StudyHub</span>
-            <span className="flex items-center gap-2"><span className="h-3 w-3 rounded-full border-2 border-primary" /> Khan Circle</span>
-            <span className="flex items-center gap-2"><span className="h-3 w-3 rotate-45 bg-primary" /> Quizly</span>
+            <span className="flex items-center gap-2">
+              <span className="h-3 w-3 rounded-sm bg-primary" /> Cambridge
+            </span>
+            <span className="flex items-center gap-2">
+              <Zap className="h-4 w-4 text-accent" /> MIT Prep
+            </span>
+            <span className="flex items-center gap-2">
+              <span className="h-3 w-3 rounded-full bg-accent" /> StudyHub
+            </span>
+            <span className="flex items-center gap-2">
+              <span className="h-3 w-3 rounded-full border-2 border-primary" /> Khan Circle
+            </span>
+            <span className="flex items-center gap-2">
+              <span className="h-3 w-3 rotate-45 bg-primary" /> Quizly
+            </span>
           </div>
         </div>
       </section>
@@ -166,9 +242,12 @@ function Landing() {
             <span className="inline-flex items-center gap-2 text-sm font-semibold text-accent">
               <Sparkles className="h-4 w-4" /> What you can study
             </span>
-            <h2 className="mt-3 font-display text-4xl font-black leading-tight">Quizzes from <br /> any kind of notes</h2>
+            <h2 className="mt-3 font-display text-4xl font-black leading-tight">
+              Quizzes from <br /> any kind of notes
+            </h2>
             <p className="mt-3 text-muted-foreground">
-              Drop in PDFs, paste lecture transcripts, or upload your handwritten notes as text. We'll generate questions tailored to the material.
+              Drop in PDFs, paste lecture transcripts, or upload your handwritten notes as text.
+              We'll generate questions tailored to the material.
             </p>
             <Link to="/auth" search={{ mode: "signup" } as never}>
               <Button className="mt-5 rounded-xl bg-primary text-primary-foreground shadow-pop hover:bg-primary/90">
@@ -218,7 +297,8 @@ function Landing() {
               Smarter quizzes, <br /> built by AI advisors
             </h2>
             <p className="mt-3 text-muted-foreground">
-              QuizGen reads your notes the way a tutor would and converts them into meaningful practice — not random trivia.
+              QuizGen reads your notes the way a tutor would and converts them into meaningful
+              practice — not random trivia.
             </p>
             <div className="mt-6 grid gap-5 sm:grid-cols-2">
               {advisors.map(({ icon: Icon, title, desc }) => (
@@ -248,9 +328,21 @@ function Landing() {
         <div className="rounded-[2rem] bg-gradient-primary p-10 text-primary-foreground shadow-clay md:p-14">
           <div className="grid gap-10 md:grid-cols-3">
             {[
-              { icon: FileUp, title: "1. Upload notes", desc: "PDF or pasted text — your study material, your way." },
-              { icon: Brain, title: "2. AI builds the quiz", desc: "Choose difficulty and length. We do the rest in seconds." },
-              { icon: Trophy, title: "3. Learn & track", desc: "Instant scoring, explanations, and a complete history." },
+              {
+                icon: FileUp,
+                title: "1. Upload notes",
+                desc: "PDF or pasted text — your study material, your way.",
+              },
+              {
+                icon: Brain,
+                title: "2. AI builds the quiz",
+                desc: "Choose difficulty and length. We do the rest in seconds.",
+              },
+              {
+                icon: Trophy,
+                title: "3. Learn & track",
+                desc: "Instant scoring, explanations, and a complete history.",
+              },
             ].map(({ icon: Icon, title, desc }) => (
               <div key={title}>
                 <div className="grid h-12 w-12 place-items-center rounded-2xl bg-white/15 backdrop-blur">

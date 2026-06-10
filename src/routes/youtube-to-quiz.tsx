@@ -18,7 +18,10 @@ export const Route = createFileRoute("/youtube-to-quiz")({
         content:
           "Free AI video to quiz tool. Paste a YouTube link and turn any lecture, tutorial, or study video into a multiple-choice practice quiz in seconds.",
       },
-      { property: "og:title", content: "YouTube to Quiz Generator — Turn Videos into Practice Tests" },
+      {
+        property: "og:title",
+        content: "YouTube to Quiz Generator — Turn Videos into Practice Tests",
+      },
       {
         property: "og:description",
         content:
@@ -80,7 +83,9 @@ function YouTubeToQuizPage() {
       return;
     }
     if (!videoId) {
-      toast.error("That doesn't look like a YouTube URL. Try a youtube.com/watch or youtu.be link.");
+      toast.error(
+        "That doesn't look like a YouTube URL. Try a youtube.com/watch or youtu.be link.",
+      );
       return;
     }
     setLoading(true);
@@ -114,12 +119,20 @@ function YouTubeToQuizPage() {
           QuizGen
         </Link>
         <nav className="hidden items-center gap-6 text-sm font-semibold text-foreground/80 md:flex">
-          <Link to="/" className="hover:text-primary">Home</Link>
-          <Link to="/study-guide" className="hover:text-primary">Study Guide</Link>
-          <Link to="/auth" className="hover:text-primary">Sign in</Link>
+          <Link to="/" className="hover:text-primary">
+            Home
+          </Link>
+          <Link to="/study-guide" className="hover:text-primary">
+            Study Guide
+          </Link>
+          <Link to="/auth" className="hover:text-primary">
+            Sign in
+          </Link>
         </nav>
         <Link to="/auth">
-          <Button className="rounded-xl">Get started <ArrowRight className="ml-1 h-4 w-4" /></Button>
+          <Button className="rounded-xl">
+            Get started <ArrowRight className="ml-1 h-4 w-4" />
+          </Button>
         </Link>
       </header>
 
@@ -131,8 +144,8 @@ function YouTubeToQuizPage() {
           Turn any <span className="text-primary">YouTube video</span> into a quiz
         </h1>
         <p className="mx-auto mt-4 max-w-xl text-muted-foreground">
-          Paste a YouTube lecture or tutorial link, add a short topic, and our AI builds a multiple-choice quiz so you
-          can self-test what you just watched.
+          Paste a YouTube lecture or tutorial link, add a short topic, and our AI builds a
+          multiple-choice quiz so you can self-test what you just watched.
         </p>
       </section>
 
@@ -187,12 +200,19 @@ function YouTubeToQuizPage() {
                 className="mt-1.5"
               />
               <p className="mt-1 text-xs text-muted-foreground">
-                Tip: open the video on YouTube, click <strong>More → Show transcript</strong>, copy the text, and paste it here.
+                Tip: open the video on YouTube, click <strong>More → Show transcript</strong>, copy
+                the text, and paste it here.
               </p>
             </div>
 
             <Button onClick={handleGenerate} disabled={loading} size="lg" className="rounded-xl">
-              {loading ? "Generating quiz…" : <>Generate quiz <Sparkles className="ml-2 h-4 w-4" /></>}
+              {loading ? (
+                "Generating quiz…"
+              ) : (
+                <>
+                  Generate quiz <Sparkles className="ml-2 h-4 w-4" />
+                </>
+              )}
             </Button>
           </div>
         </div>
@@ -206,7 +226,9 @@ function YouTubeToQuizPage() {
 
             {quiz.questions.map((q, i) => (
               <div key={i} className="rounded-2xl border border-border bg-card p-5 shadow-soft">
-                <p className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Question {i + 1}</p>
+                <p className="text-xs font-bold uppercase tracking-wider text-muted-foreground">
+                  Question {i + 1}
+                </p>
                 <p className="mt-1 font-display text-lg font-bold leading-snug">{q.question}</p>
                 <div className="mt-3 space-y-2">
                   {q.options.map((opt, oi) => {
@@ -216,11 +238,11 @@ function YouTubeToQuizPage() {
                       ? correct
                         ? "border-success bg-success/10"
                         : picked
-                        ? "border-destructive bg-destructive/10"
-                        : "border-border"
+                          ? "border-destructive bg-destructive/10"
+                          : "border-border"
                       : picked
-                      ? "border-primary bg-primary/5"
-                      : "border-border hover:border-primary/50";
+                        ? "border-primary bg-primary/5"
+                        : "border-border hover:border-primary/50";
                     return (
                       <button
                         key={oi}
@@ -233,8 +255,12 @@ function YouTubeToQuizPage() {
                           {String.fromCharCode(65 + oi)}
                         </span>
                         <span className="text-sm">{opt}</span>
-                        {showAnswers && correct && <Check className="ml-auto h-4 w-4 text-success" />}
-                        {showAnswers && picked && !correct && <X className="ml-auto h-4 w-4 text-destructive" />}
+                        {showAnswers && correct && (
+                          <Check className="ml-auto h-4 w-4 text-success" />
+                        )}
+                        {showAnswers && picked && !correct && (
+                          <X className="ml-auto h-4 w-4 text-destructive" />
+                        )}
                       </button>
                     );
                   })}
@@ -254,10 +280,13 @@ function YouTubeToQuizPage() {
                     You scored {score} / {quiz.questions.length}
                   </p>
                   <p className="mt-1 text-sm text-muted-foreground">
-                    Sign up to save quizzes, track history, and generate quizzes from your PDFs and notes too.
+                    Sign up to save quizzes, track history, and generate quizzes from your PDFs and
+                    notes too.
                   </p>
                   <Link to="/auth" search={{ mode: "signup" } as never}>
-                    <Button className="mt-4 rounded-xl"><Play className="mr-2 h-4 w-4" /> Save my quizzes</Button>
+                    <Button className="mt-4 rounded-xl">
+                      <Play className="mr-2 h-4 w-4" /> Save my quizzes
+                    </Button>
                   </Link>
                 </>
               ) : (
@@ -271,12 +300,23 @@ function YouTubeToQuizPage() {
       </section>
 
       <section className="mx-auto max-w-4xl px-4 pb-20">
-        <h2 className="text-center font-display text-3xl font-black">How the YouTube to Quiz tool works</h2>
+        <h2 className="text-center font-display text-3xl font-black">
+          How the YouTube to Quiz tool works
+        </h2>
         <div className="mt-8 grid gap-6 md:grid-cols-3">
           {[
-            { title: "1. Paste the video link", desc: "Drop in any YouTube lecture, tutorial, or revision video." },
-            { title: "2. Add the transcript (optional)", desc: "Paste YouTube's auto-transcript for the sharpest questions." },
-            { title: "3. Practice and self-test", desc: "Get instant multiple-choice questions with explanations." },
+            {
+              title: "1. Paste the video link",
+              desc: "Drop in any YouTube lecture, tutorial, or revision video.",
+            },
+            {
+              title: "2. Add the transcript (optional)",
+              desc: "Paste YouTube's auto-transcript for the sharpest questions.",
+            },
+            {
+              title: "3. Practice and self-test",
+              desc: "Get instant multiple-choice questions with explanations.",
+            },
           ].map((s) => (
             <div key={s.title} className="rounded-2xl border border-border bg-card p-5 shadow-soft">
               <h3 className="font-display text-lg font-bold">{s.title}</h3>

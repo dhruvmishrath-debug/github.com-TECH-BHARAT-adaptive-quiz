@@ -59,8 +59,10 @@ Generate exactly ${data.numQuestions} questions. Each question must have 4 disti
       return object;
     } catch (e: any) {
       const msg = String(e?.message ?? e);
-      if (msg.includes("429")) throw new Error("AI rate limit reached. Please wait a moment and try again.");
-      if (msg.includes("402")) throw new Error("AI credits exhausted. Please add credits in your workspace.");
+      if (msg.includes("429"))
+        throw new Error("AI rate limit reached. Please wait a moment and try again.");
+      if (msg.includes("402"))
+        throw new Error("AI credits exhausted. Please add credits in your workspace.");
       throw new Error("Quiz generation failed, please try again.");
     }
   });

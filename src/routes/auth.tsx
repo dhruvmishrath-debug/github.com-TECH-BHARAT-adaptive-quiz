@@ -10,7 +10,6 @@ import { z } from "zod";
 import { lovable } from "@/integrations/lovable";
 import authCharacter from "@/assets/auth-character.png";
 
-
 async function handleGoogle() {
   try {
     const result = await lovable.auth.signInWithOAuth("google", {
@@ -37,14 +36,19 @@ export const Route = createFileRoute("/auth")({
   head: () => ({
     meta: [
       { title: "Sign in or Sign up — QuizGen" },
-      { name: "description", content: "Log in to QuizGen or create a free account to turn your study notes into AI-generated quizzes with instant scoring and explanations." },
+      {
+        name: "description",
+        content:
+          "Log in to QuizGen or create a free account to turn your study notes into AI-generated quizzes with instant scoring and explanations.",
+      },
       { property: "og:title", content: "Sign in or Sign up — QuizGen" },
-      { property: "og:description", content: "Create a free QuizGen account to turn study notes into adaptive AI quizzes." },
+      {
+        property: "og:description",
+        content: "Create a free QuizGen account to turn study notes into adaptive AI quizzes.",
+      },
       { property: "og:url", content: "https://lnct-tech-bharat.lovable.app/auth" },
     ],
-    links: [
-      { rel: "canonical", href: "https://lnct-tech-bharat.lovable.app/auth" },
-    ],
+    links: [{ rel: "canonical", href: "https://lnct-tech-bharat.lovable.app/auth" }],
   }),
   component: AuthPage,
 });
@@ -82,7 +86,10 @@ function AuthPage() {
           return;
         }
         const parsed = signupSchema.safeParse({ name, email, password });
-        if (!parsed.success) { toast.error(parsed.error.issues[0].message); return; }
+        if (!parsed.success) {
+          toast.error(parsed.error.issues[0].message);
+          return;
+        }
         const { error } = await supabase.auth.signUp({
           email: parsed.data.email,
           password: parsed.data.password,
@@ -96,7 +103,10 @@ function AuthPage() {
         router.navigate({ to: "/dashboard", replace: true });
       } else {
         const parsed = loginSchema.safeParse({ email, password });
-        if (!parsed.success) { toast.error(parsed.error.issues[0].message); return; }
+        if (!parsed.success) {
+          toast.error(parsed.error.issues[0].message);
+          return;
+        }
         const { error } = await supabase.auth.signInWithPassword(parsed.data);
         if (error) throw error;
         toast.success("Welcome back!");
@@ -105,7 +115,10 @@ function AuthPage() {
     } catch (err: any) {
       const msg = String(err?.message ?? "");
       if (msg.toLowerCase().includes("invalid")) {
-        toast.error("Wrong email or password. If you signed up with Google, use the Google button below.", { duration: 6000 });
+        toast.error(
+          "Wrong email or password. If you signed up with Google, use the Google button below.",
+          { duration: 6000 },
+        );
       } else {
         toast.error(msg || "Something went wrong");
       }
@@ -113,7 +126,6 @@ function AuthPage() {
       setLoading(false);
     }
   }
-
 
   return (
     <div className="relative grid min-h-screen place-items-center overflow-hidden px-4 py-12">
@@ -137,7 +149,10 @@ function AuthPage() {
         </div>
 
         <div className="relative rounded-[2rem] border border-white/60 bg-white/80 p-8 shadow-clay backdrop-blur-xl">
-          <Link to="/" className="absolute -top-3 left-1/2 hidden -translate-x-1/2 items-center gap-2 rounded-full bg-white px-3 py-1 text-xs font-bold shadow-soft">
+          <Link
+            to="/"
+            className="absolute -top-3 left-1/2 hidden -translate-x-1/2 items-center gap-2 rounded-full bg-white px-3 py-1 text-xs font-bold shadow-soft"
+          >
             <Sparkles className="h-3 w-3 text-primary" /> QuizGen
           </Link>
 
@@ -151,34 +166,79 @@ function AuthPage() {
           <form onSubmit={handleSubmit} className="mt-6 space-y-3">
             {mode === "signup" && (
               <div className="relative">
-                <Label htmlFor="name" className="sr-only">Name</Label>
+                <Label htmlFor="name" className="sr-only">
+                  Name
+                </Label>
                 <User className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-                <Input id="name" placeholder="Full name" value={name} onChange={(e) => setName(e.target.value)} required maxLength={80}
-                  className="h-12 rounded-full border-transparent bg-white/90 pl-11 shadow-soft" />
+                <Input
+                  id="name"
+                  placeholder="Full name"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  required
+                  maxLength={80}
+                  className="h-12 rounded-full border-transparent bg-white/90 pl-11 shadow-soft"
+                />
               </div>
             )}
             <div className="relative">
-              <Label htmlFor="email" className="sr-only">Email</Label>
+              <Label htmlFor="email" className="sr-only">
+                Email
+              </Label>
               <Mail className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-              <Input id="email" type="email" placeholder="Username / Email" value={email} onChange={(e) => setEmail(e.target.value)} required maxLength={255}
-                className="h-12 rounded-full border-transparent bg-white/90 pl-11 shadow-soft" />
+              <Input
+                id="email"
+                type="email"
+                placeholder="Username / Email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+                maxLength={255}
+                className="h-12 rounded-full border-transparent bg-white/90 pl-11 shadow-soft"
+              />
             </div>
             <div className="relative">
-              <Label htmlFor="password" className="sr-only">Password</Label>
+              <Label htmlFor="password" className="sr-only">
+                Password
+              </Label>
               <Lock className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-              <Input id="password" type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} required minLength={6} maxLength={72}
-                className="h-12 rounded-full border-transparent bg-white/90 pl-11 shadow-soft" />
+              <Input
+                id="password"
+                type="password"
+                placeholder="Password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+                minLength={6}
+                maxLength={72}
+                className="h-12 rounded-full border-transparent bg-white/90 pl-11 shadow-soft"
+              />
             </div>
             {mode === "signup" && (
               <div className="relative">
-                <Label htmlFor="confirm" className="sr-only">Confirm</Label>
+                <Label htmlFor="confirm" className="sr-only">
+                  Confirm
+                </Label>
                 <Lock className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-                <Input id="confirm" type="password" placeholder="Confirm password" value={confirm} onChange={(e) => setConfirm(e.target.value)} required minLength={6} maxLength={72}
-                  className="h-12 rounded-full border-transparent bg-white/90 pl-11 shadow-soft" />
+                <Input
+                  id="confirm"
+                  type="password"
+                  placeholder="Confirm password"
+                  value={confirm}
+                  onChange={(e) => setConfirm(e.target.value)}
+                  required
+                  minLength={6}
+                  maxLength={72}
+                  className="h-12 rounded-full border-transparent bg-white/90 pl-11 shadow-soft"
+                />
               </div>
             )}
 
-            <Button type="submit" className="mt-2 h-12 w-full rounded-full bg-gradient-primary text-base font-bold text-primary-foreground shadow-pop hover:opacity-95" disabled={loading}>
+            <Button
+              type="submit"
+              className="mt-2 h-12 w-full rounded-full bg-gradient-primary text-base font-bold text-primary-foreground shadow-pop hover:opacity-95"
+              disabled={loading}
+            >
               {loading ? "Please wait…" : mode === "signup" ? "Create account" : "Login"}
             </Button>
           </form>
@@ -196,11 +256,13 @@ function AuthPage() {
             className="h-12 w-full rounded-full border-2 bg-white text-base font-bold shadow-soft hover:bg-white"
           >
             <svg className="mr-2 h-5 w-5" viewBox="0 0 24 24" aria-hidden="true">
-              <path fill="#EA4335" d="M12 10.2v3.9h5.5c-.2 1.4-1.7 4.1-5.5 4.1-3.3 0-6-2.7-6-6.1s2.7-6.1 6-6.1c1.9 0 3.2.8 3.9 1.5l2.7-2.6C16.9 3.3 14.7 2.3 12 2.3 6.7 2.3 2.5 6.6 2.5 12s4.2 9.7 9.5 9.7c5.5 0 9.1-3.9 9.1-9.4 0-.6-.1-1.1-.2-1.6H12z"/>
+              <path
+                fill="#EA4335"
+                d="M12 10.2v3.9h5.5c-.2 1.4-1.7 4.1-5.5 4.1-3.3 0-6-2.7-6-6.1s2.7-6.1 6-6.1c1.9 0 3.2.8 3.9 1.5l2.7-2.6C16.9 3.3 14.7 2.3 12 2.3 6.7 2.3 2.5 6.6 2.5 12s4.2 9.7 9.5 9.7c5.5 0 9.1-3.9 9.1-9.4 0-.6-.1-1.1-.2-1.6H12z"
+              />
             </svg>
             Continue with Google
           </Button>
-
 
           <p className="mt-6 text-center text-sm text-muted-foreground">
             {mode === "signup" ? "Already have an account?" : "Don't have an account?"}{" "}
@@ -217,4 +279,3 @@ function AuthPage() {
     </div>
   );
 }
-

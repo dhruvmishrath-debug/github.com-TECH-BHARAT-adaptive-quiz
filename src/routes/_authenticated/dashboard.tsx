@@ -8,9 +8,16 @@ export const Route = createFileRoute("/_authenticated/dashboard")({
   head: () => ({
     meta: [
       { title: "Dashboard — QuizGen" },
-      { name: "description", content: "Your QuizGen dashboard: recent quizzes, average score, and quick access to generate a new quiz from your notes." },
+      {
+        name: "description",
+        content:
+          "Your QuizGen dashboard: recent quizzes, average score, and quick access to generate a new quiz from your notes.",
+      },
       { property: "og:title", content: "Your QuizGen Dashboard" },
-      { property: "og:description", content: "See your recent quizzes and study progress at a glance." },
+      {
+        property: "og:description",
+        content: "See your recent quizzes and study progress at a glance.",
+      },
       { property: "og:url", content: "https://lnct-tech-bharat.lovable.app/dashboard" },
       { name: "robots", content: "noindex" },
     ],
@@ -19,7 +26,14 @@ export const Route = createFileRoute("/_authenticated/dashboard")({
   component: Dashboard,
 });
 
-type Quiz = { id: string; title: string; subject: string; difficulty: string; total_questions: number; created_at: string };
+type Quiz = {
+  id: string;
+  title: string;
+  subject: string;
+  difficulty: string;
+  total_questions: number;
+  created_at: string;
+};
 
 function Dashboard() {
   const [name, setName] = useState("");
@@ -47,31 +61,43 @@ function Dashboard() {
     <div className="space-y-8">
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
-          <h1 className="font-display text-4xl font-bold">Dashboard — Welcome back, {name.split(" ")[0]}.</h1>
+          <h1 className="font-display text-4xl font-bold">
+            Dashboard — Welcome back, {name.split(" ")[0]}.
+          </h1>
           <p className="mt-1 text-muted-foreground">Ready to turn more notes into quizzes?</p>
         </div>
         <Link to="/upload">
-          <Button size="lg" className="shadow-warm"><Plus className="mr-2 h-4 w-4" /> New quiz</Button>
+          <Button size="lg" className="shadow-warm">
+            <Plus className="mr-2 h-4 w-4" /> New quiz
+          </Button>
         </Link>
       </div>
 
       <div className="grid gap-4 md:grid-cols-3">
         <StatCard icon={BookOpen} label="Quizzes generated" value={String(quizzes.length)} />
-        <StatCard icon={TrendingUp} label="Average score" value={avgScore == null ? "—" : `${avgScore.toFixed(0)}%`} />
+        <StatCard
+          icon={TrendingUp}
+          label="Average score"
+          value={avgScore == null ? "—" : `${avgScore.toFixed(0)}%`}
+        />
         <StatCard icon={History} label="Quick access" value="History" actionTo="/history" />
       </div>
 
       <section>
         <div className="mb-4 flex items-center justify-between">
           <h2 className="font-display text-2xl font-bold">Recent quizzes</h2>
-          <Link to="/my-quizzes" className="text-sm font-semibold text-accent hover:underline">See all →</Link>
+          <Link to="/my-quizzes" className="text-sm font-semibold text-accent hover:underline">
+            See all →
+          </Link>
         </div>
         {loading ? (
           <p className="text-muted-foreground">Loading…</p>
         ) : quizzes.length === 0 ? (
           <div className="rounded-2xl border border-dashed border-border p-10 text-center">
             <FileText className="mx-auto h-10 w-10 text-muted-foreground" />
-            <p className="mt-3 text-muted-foreground">No quizzes yet. Upload some notes to get started.</p>
+            <p className="mt-3 text-muted-foreground">
+              No quizzes yet. Upload some notes to get started.
+            </p>
             <Link to="/upload" className="mt-4 inline-block">
               <Button>Create your first quiz</Button>
             </Link>
@@ -108,7 +134,17 @@ function Dashboard() {
   );
 }
 
-function StatCard({ icon: Icon, label, value, actionTo }: { icon: any; label: string; value: string; actionTo?: string }) {
+function StatCard({
+  icon: Icon,
+  label,
+  value,
+  actionTo,
+}: {
+  icon: any;
+  label: string;
+  value: string;
+  actionTo?: string;
+}) {
   const inner = (
     <div className="flex items-center gap-4 rounded-2xl border border-border bg-card p-5 shadow-soft">
       <div className="grid h-11 w-11 place-items-center rounded-xl bg-gradient-warm text-primary-foreground shadow-warm">

@@ -74,9 +74,8 @@ src/
 - No slide editing UI (read-only deck)
 - No notes panel or presenter view (can add later if wanted)
 
-After approval I'll build all 14 slide components, the shell, navigation, grid, and fullscreen mode in one pass.  
-  
-  
-I want a whole full website in which we can provide the services. Don't mention. We want to make a wwb in wich we build the web app for customers so make that it is not a portfolio i can discribe my plane to you now you make a full stack web in which we provide the service on that we make webside apps and acording to there requriment so make apage were we sell web for user 
+After approval I'll build all 14 slide components, the shell, navigation, grid, and fullscreen mode in one pass.
+
+I want a whole full website in which we can provide the services. Don't mention. We want to make a wwb in wich we build the web app for customers so make that it is not a portfolio i can discribe my plane to you now you make a full stack web in which we provide the service on that we make webside apps and acording to there requriment so make apage were we sell web for user
 
 &nbsp;

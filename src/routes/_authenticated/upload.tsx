@@ -7,7 +7,13 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { toast } from "sonner";
 import { Upload as UploadIcon, FileText, Sparkles } from "lucide-react";
 
@@ -15,9 +21,16 @@ export const Route = createFileRoute("/_authenticated/upload")({
   head: () => ({
     meta: [
       { title: "New Quiz — Upload Notes — QuizGen" },
-      { name: "description", content: "Upload a PDF or paste your study notes, pick difficulty and number of questions, and QuizGen will generate a quiz in seconds." },
+      {
+        name: "description",
+        content:
+          "Upload a PDF or paste your study notes, pick difficulty and number of questions, and QuizGen will generate a quiz in seconds.",
+      },
       { property: "og:title", content: "Generate a New Quiz from Your Notes" },
-      { property: "og:description", content: "Turn any PDF or pasted notes into an adaptive AI quiz in seconds." },
+      {
+        property: "og:description",
+        content: "Turn any PDF or pasted notes into an adaptive AI quiz in seconds.",
+      },
       { property: "og:url", content: "https://lnct-tech-bharat.lovable.app/upload" },
       { name: "robots", content: "noindex" },
     ],
@@ -40,8 +53,14 @@ function UploadPage() {
   function handleFile(e: React.ChangeEvent<HTMLInputElement>) {
     const f = e.target.files?.[0] ?? null;
     if (!f) return;
-    if (f.size > 10 * 1024 * 1024) { toast.error("File must be under 10MB"); return; }
-    if (!/\.(pdf|txt)$/i.test(f.name)) { toast.error("Only PDF or TXT files"); return; }
+    if (f.size > 10 * 1024 * 1024) {
+      toast.error("File must be under 10MB");
+      return;
+    }
+    if (!/\.(pdf|txt)$/i.test(f.name)) {
+      toast.error("Only PDF or TXT files");
+      return;
+    }
     setFile(f);
   }
 
@@ -83,7 +102,10 @@ function UploadPage() {
         <p className="mt-1 text-muted-foreground">PDF or pasted text. We'll do the rest.</p>
       </div>
 
-      <form onSubmit={onSubmit} className="space-y-6 rounded-2xl border border-border bg-card p-6 shadow-soft md:p-8">
+      <form
+        onSubmit={onSubmit}
+        className="space-y-6 rounded-2xl border border-border bg-card p-6 shadow-soft md:p-8"
+      >
         <div className="space-y-2">
           <Label>Notes file (PDF or TXT, up to 10MB)</Label>
           <label className="flex cursor-pointer items-center gap-3 rounded-xl border-2 border-dashed border-border bg-background/50 px-4 py-6 transition hover:border-accent">
@@ -92,7 +114,12 @@ function UploadPage() {
               <p className="text-sm font-medium">{file ? file.name : "Click to upload a file"}</p>
               <p className="text-xs text-muted-foreground">PDF or TXT only</p>
             </div>
-            <input type="file" accept=".pdf,.txt,application/pdf,text/plain" className="hidden" onChange={handleFile} />
+            <input
+              type="file"
+              accept=".pdf,.txt,application/pdf,text/plain"
+              className="hidden"
+              onChange={handleFile}
+            />
           </label>
         </div>
 
@@ -102,23 +129,45 @@ function UploadPage() {
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="notes"><FileText className="mr-1 inline h-4 w-4" /> Notes</Label>
-          <Textarea id="notes" value={notesText} onChange={(e) => setNotesText(e.target.value)} rows={8} placeholder="Paste your study notes here…" maxLength={60000} />
+          <Label htmlFor="notes">
+            <FileText className="mr-1 inline h-4 w-4" /> Notes
+          </Label>
+          <Textarea
+            id="notes"
+            value={notesText}
+            onChange={(e) => setNotesText(e.target.value)}
+            rows={8}
+            placeholder="Paste your study notes here…"
+            maxLength={60000}
+          />
         </div>
 
         <div className="grid gap-4 md:grid-cols-2">
           <div className="space-y-2">
             <Label htmlFor="title">Quiz title</Label>
-            <Input id="title" value={title} onChange={(e) => setTitle(e.target.value)} placeholder="e.g. Chapter 5 Review" maxLength={200} />
+            <Input
+              id="title"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              placeholder="e.g. Chapter 5 Review"
+              maxLength={200}
+            />
           </div>
           <div className="space-y-2">
             <Label htmlFor="subject">Subject</Label>
-            <Input id="subject" value={subject} onChange={(e) => setSubject(e.target.value)} maxLength={100} />
+            <Input
+              id="subject"
+              value={subject}
+              onChange={(e) => setSubject(e.target.value)}
+              maxLength={100}
+            />
           </div>
           <div className="space-y-2">
             <Label>Difficulty</Label>
             <Select value={difficulty} onValueChange={(v) => setDifficulty(v as any)}>
-              <SelectTrigger><SelectValue /></SelectTrigger>
+              <SelectTrigger>
+                <SelectValue />
+              </SelectTrigger>
               <SelectContent>
                 <SelectItem value="Easy">Easy</SelectItem>
                 <SelectItem value="Medium">Medium</SelectItem>
@@ -130,10 +179,14 @@ function UploadPage() {
           <div className="space-y-2">
             <Label>Number of questions</Label>
             <Select value={String(numQuestions)} onValueChange={(v) => setNumQuestions(Number(v))}>
-              <SelectTrigger><SelectValue /></SelectTrigger>
+              <SelectTrigger>
+                <SelectValue />
+              </SelectTrigger>
               <SelectContent>
                 {[5, 10, 15, 20].map((n) => (
-                  <SelectItem key={n} value={String(n)}>{n} questions</SelectItem>
+                  <SelectItem key={n} value={String(n)}>
+                    {n} questions
+                  </SelectItem>
                 ))}
               </SelectContent>
             </Select>

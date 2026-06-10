@@ -45,10 +45,46 @@ function AuthedLayout() {
             QuizGen
           </Link>
           <nav className="hidden gap-1 md:flex">
-            <Link to="/dashboard" className="rounded-md px-3 py-1.5 text-sm font-medium text-muted-foreground hover:bg-secondary hover:text-foreground" activeProps={{ className: "rounded-md px-3 py-1.5 text-sm font-semibold bg-secondary text-foreground" }}>Dashboard</Link>
-            <Link to="/upload" className="rounded-md px-3 py-1.5 text-sm font-medium text-muted-foreground hover:bg-secondary hover:text-foreground" activeProps={{ className: "rounded-md px-3 py-1.5 text-sm font-semibold bg-secondary text-foreground" }}>New Quiz</Link>
-            <Link to="/my-quizzes" className="rounded-md px-3 py-1.5 text-sm font-medium text-muted-foreground hover:bg-secondary hover:text-foreground" activeProps={{ className: "rounded-md px-3 py-1.5 text-sm font-semibold bg-secondary text-foreground" }}>My Quizzes</Link>
-            <Link to="/history" className="rounded-md px-3 py-1.5 text-sm font-medium text-muted-foreground hover:bg-secondary hover:text-foreground" activeProps={{ className: "rounded-md px-3 py-1.5 text-sm font-semibold bg-secondary text-foreground" }}>History</Link>
+            <Link
+              to="/dashboard"
+              className="rounded-md px-3 py-1.5 text-sm font-medium text-muted-foreground hover:bg-secondary hover:text-foreground"
+              activeProps={{
+                className:
+                  "rounded-md px-3 py-1.5 text-sm font-semibold bg-secondary text-foreground",
+              }}
+            >
+              Dashboard
+            </Link>
+            <Link
+              to="/upload"
+              className="rounded-md px-3 py-1.5 text-sm font-medium text-muted-foreground hover:bg-secondary hover:text-foreground"
+              activeProps={{
+                className:
+                  "rounded-md px-3 py-1.5 text-sm font-semibold bg-secondary text-foreground",
+              }}
+            >
+              New Quiz
+            </Link>
+            <Link
+              to="/my-quizzes"
+              className="rounded-md px-3 py-1.5 text-sm font-medium text-muted-foreground hover:bg-secondary hover:text-foreground"
+              activeProps={{
+                className:
+                  "rounded-md px-3 py-1.5 text-sm font-semibold bg-secondary text-foreground",
+              }}
+            >
+              My Quizzes
+            </Link>
+            <Link
+              to="/history"
+              className="rounded-md px-3 py-1.5 text-sm font-medium text-muted-foreground hover:bg-secondary hover:text-foreground"
+              activeProps={{
+                className:
+                  "rounded-md px-3 py-1.5 text-sm font-semibold bg-secondary text-foreground",
+              }}
+            >
+              History
+            </Link>
           </nav>
           <div className="flex items-center gap-2">
             <span className="hidden text-sm text-muted-foreground sm:inline">{name}</span>

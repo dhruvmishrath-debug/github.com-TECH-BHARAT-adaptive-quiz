@@ -11,9 +11,16 @@ export const Route = createFileRoute("/_authenticated/my-quizzes")({
   head: () => ({
     meta: [
       { title: "My Quizzes — QuizGen" },
-      { name: "description", content: "Manage all the quizzes you've generated on QuizGen — replay them, view scores, or delete ones you no longer need." },
+      {
+        name: "description",
+        content:
+          "Manage all the quizzes you've generated on QuizGen — replay them, view scores, or delete ones you no longer need.",
+      },
       { property: "og:title", content: "My QuizGen Library" },
-      { property: "og:description", content: "All the quizzes you've generated, ready to replay anytime." },
+      {
+        property: "og:description",
+        content: "All the quizzes you've generated, ready to replay anytime.",
+      },
       { property: "og:url", content: "https://lnct-tech-bharat.lovable.app/my-quizzes" },
       { name: "robots", content: "noindex" },
     ],
@@ -43,7 +50,9 @@ function MyQuizzesPage() {
       .order("created_at", { ascending: false });
     setRows((data as any) ?? []);
   }
-  useEffect(() => { load(); }, []);
+  useEffect(() => {
+    load();
+  }, []);
 
   async function handleDelete(id: string) {
     if (!confirm("Delete this quiz and all its attempts?")) return;
@@ -63,7 +72,9 @@ function MyQuizzesPage() {
           <h1 className="font-display text-3xl font-bold">My quizzes</h1>
           <p className="text-muted-foreground">All the quizzes you've created.</p>
         </div>
-        <Link to="/upload"><Button>New quiz</Button></Link>
+        <Link to="/upload">
+          <Button>New quiz</Button>
+        </Link>
       </div>
 
       {rows.length === 0 ? (
@@ -71,9 +82,10 @@ function MyQuizzesPage() {
       ) : (
         <div className="grid gap-3 md:grid-cols-2">
           {rows.map((q) => {
-            const avg = q.attempts.length > 0
-              ? q.attempts.reduce((s, a) => s + Number(a.score), 0) / q.attempts.length
-              : null;
+            const avg =
+              q.attempts.length > 0
+                ? q.attempts.reduce((s, a) => s + Number(a.score), 0) / q.attempts.length
+                : null;
             return (
               <div key={q.id} className="rounded-2xl border border-border bg-card p-5 shadow-soft">
                 <div className="flex items-start justify-between gap-3">
@@ -85,14 +97,23 @@ function MyQuizzesPage() {
                   </div>
                 </div>
                 <div className="mt-3 flex items-center justify-between text-xs text-muted-foreground">
-                  <span>{q.attempts.length} attempt{q.attempts.length === 1 ? "" : "s"}</span>
+                  <span>
+                    {q.attempts.length} attempt{q.attempts.length === 1 ? "" : "s"}
+                  </span>
                   <span>{avg == null ? "—" : `Avg ${avg.toFixed(0)}%`}</span>
                 </div>
                 <div className="mt-4 flex gap-2">
                   <Link to="/quiz/$quizId" params={{ quizId: q.id }} className="flex-1">
-                    <Button className="w-full" size="sm"><Play className="mr-1 h-4 w-4" /> Attempt</Button>
+                    <Button className="w-full" size="sm">
+                      <Play className="mr-1 h-4 w-4" /> Attempt
+                    </Button>
                   </Link>
-                  <Button variant="outline" size="sm" aria-label="Delete quiz" onClick={() => handleDelete(q.id)}>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    aria-label="Delete quiz"
+                    onClick={() => handleDelete(q.id)}
+                  >
                     <Trash2 className="h-4 w-4" />
                   </Button>
                 </div>

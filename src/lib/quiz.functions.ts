@@ -4,7 +4,6 @@ import { z } from "zod";
 import { generateObject } from "ai";
 import { createLovableAiGatewayProvider } from "./ai-gateway.server";
 
-
 const GenerateInput = z.object({
   notes: z.string().min(50).max(60000),
   subject: z.string().min(1).max(100),
@@ -59,11 +58,12 @@ ${notes}`;
       questions = object.questions;
     } catch (e: any) {
       const msg = String(e?.message ?? e);
-      if (msg.includes("429")) throw new Error("AI rate limit reached. Please wait a moment and try again.");
-      if (msg.includes("402")) throw new Error("AI credits exhausted. Please add credits in your workspace.");
+      if (msg.includes("429"))
+        throw new Error("AI rate limit reached. Please wait a moment and try again.");
+      if (msg.includes("402"))
+        throw new Error("AI credits exhausted. Please add credits in your workspace.");
       throw new Error("Quiz generation failed, please try again.");
     }
-
 
     const { supabase, userId } = context;
     const { data: quiz, error: qErr } = await supabase
@@ -121,7 +121,8 @@ export const submitQuiz = createServerFn({ method: "POST" })
     const correctMap = new Map(questions.map((q) => [q.id, q.correct_answer_index]));
     let correctCount = 0;
     for (const a of data.answers) {
-      if (a.selectedIndex !== null && correctMap.get(a.questionId) === a.selectedIndex) correctCount++;
+      if (a.selectedIndex !== null && correctMap.get(a.questionId) === a.selectedIndex)
+        correctCount++;
     }
     const score = questions.length === 0 ? 0 : (correctCount / questions.length) * 100;
 

@@ -8,7 +8,16 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
-import { Sparkles, BookOpen, FileUp, Lightbulb, ListChecks, HelpCircle, ArrowRight, Printer } from "lucide-react";
+import {
+  Sparkles,
+  BookOpen,
+  FileUp,
+  Lightbulb,
+  ListChecks,
+  HelpCircle,
+  ArrowRight,
+  Printer,
+} from "lucide-react";
 
 export const Route = createFileRoute("/study-guide")({
   head: () => ({
@@ -99,8 +108,12 @@ function StudyGuidePage() {
           QuizGen
         </Link>
         <nav className="hidden items-center gap-7 text-sm font-semibold text-foreground/80 md:flex">
-          <Link to="/" className="hover:text-primary">Home</Link>
-          <Link to="/study-guide" className="text-primary">Study Guide</Link>
+          <Link to="/" className="hover:text-primary">
+            Home
+          </Link>
+          <Link to="/study-guide" className="text-primary">
+            Study Guide
+          </Link>
         </nav>
         <Link to="/auth">
           <Button className="rounded-xl bg-primary text-primary-foreground shadow-pop hover:bg-primary/90">
@@ -117,8 +130,8 @@ function StudyGuidePage() {
           AI <span className="text-primary">Study Guide Generator</span>
         </h1>
         <p className="mx-auto mt-4 max-w-2xl text-muted-foreground">
-          Paste your notes or upload a PDF and we'll extract the key concepts, definitions, summary points,
-          and practice questions you need to ace your next exam.
+          Paste your notes or upload a PDF and we'll extract the key concepts, definitions, summary
+          points, and practice questions you need to ace your next exam.
         </p>
       </section>
 
@@ -129,7 +142,9 @@ function StudyGuidePage() {
         >
           <div className="grid gap-4 md:grid-cols-[1fr_auto] md:items-end">
             <div>
-              <Label htmlFor="topic" className="text-sm font-semibold">Topic or subject</Label>
+              <Label htmlFor="topic" className="text-sm font-semibold">
+                Topic or subject
+              </Label>
               <Input
                 id="topic"
                 placeholder="e.g. Photosynthesis, World War II, Linear Algebra"
@@ -140,19 +155,29 @@ function StudyGuidePage() {
               />
             </div>
             <div>
-              <Label htmlFor="pdf" className="text-sm font-semibold">Or upload a PDF</Label>
+              <Label htmlFor="pdf" className="text-sm font-semibold">
+                Or upload a PDF
+              </Label>
               <label
                 htmlFor="pdf"
                 className="mt-1 inline-flex h-11 cursor-pointer items-center gap-2 rounded-xl border-2 border-dashed border-border bg-background px-4 text-sm font-semibold hover:border-primary"
               >
                 <FileUp className="h-4 w-4" /> Choose PDF
               </label>
-              <input id="pdf" type="file" accept="application/pdf" className="hidden" onChange={handleFile} />
+              <input
+                id="pdf"
+                type="file"
+                accept="application/pdf"
+                className="hidden"
+                onChange={handleFile}
+              />
             </div>
           </div>
 
           <div className="mt-4">
-            <Label htmlFor="notes" className="text-sm font-semibold">Your notes</Label>
+            <Label htmlFor="notes" className="text-sm font-semibold">
+              Your notes
+            </Label>
             <Textarea
               id="notes"
               placeholder="Paste lecture notes, textbook excerpts, or any study material here…"
@@ -162,7 +187,9 @@ function StudyGuidePage() {
               rows={10}
               className="mt-1 rounded-xl"
             />
-            <p className="mt-1 text-xs text-muted-foreground">{notes.length.toLocaleString()} / 60,000 characters</p>
+            <p className="mt-1 text-xs text-muted-foreground">
+              {notes.length.toLocaleString()} / 60,000 characters
+            </p>
           </div>
 
           <Button
@@ -171,7 +198,9 @@ function StudyGuidePage() {
             size="lg"
             className="mt-5 h-12 w-full rounded-xl bg-gradient-primary text-base font-bold text-primary-foreground shadow-pop hover:opacity-95"
           >
-            {loading ? "Generating your study guide…" : (
+            {loading ? (
+              "Generating your study guide…"
+            ) : (
               <>
                 <Sparkles className="mr-2 h-4 w-4" /> Generate Study Guide
               </>
@@ -218,22 +247,31 @@ function StudyGuidePage() {
 
               <Block icon={ListChecks} title="Summary Points" tint="bg-tint-mint">
                 <ul className="ml-5 list-disc space-y-1.5 text-sm">
-                  {guide.summary_points.map((s, i) => <li key={i}>{s}</li>)}
+                  {guide.summary_points.map((s, i) => (
+                    <li key={i}>{s}</li>
+                  ))}
                 </ul>
               </Block>
 
               <Block icon={HelpCircle} title="Practice Questions" tint="bg-tint-pink">
                 <ol className="ml-5 list-decimal space-y-2 text-sm">
-                  {guide.practice_questions.map((q, i) => <li key={i}>{q}</li>)}
+                  {guide.practice_questions.map((q, i) => (
+                    <li key={i}>{q}</li>
+                  ))}
                 </ol>
               </Block>
             </div>
 
             <div className="mt-10 rounded-2xl bg-gradient-primary p-6 text-center text-primary-foreground">
               <p className="font-display text-xl font-bold">Ready to test yourself?</p>
-              <p className="mt-1 text-sm text-primary-foreground/85">Turn the same notes into an adaptive quiz with instant scoring.</p>
+              <p className="mt-1 text-sm text-primary-foreground/85">
+                Turn the same notes into an adaptive quiz with instant scoring.
+              </p>
               <Link to="/auth" search={{ mode: "signup" } as never} className="mt-4 inline-block">
-                <Button variant="secondary" className="rounded-xl bg-white text-primary hover:bg-white/90">
+                <Button
+                  variant="secondary"
+                  className="rounded-xl bg-white text-primary hover:bg-white/90"
+                >
                   Create a quiz from these notes <ArrowRight className="ml-2 h-4 w-4" />
                 </Button>
               </Link>
