@@ -26,7 +26,7 @@ export const Route = createFileRoute("/study-guide")({
       {
         name: "description",
         content:
-          "Free AI study guide generator. Paste notes or upload a PDF and instantly get key concepts, definitions, summary points, and practice questions — perfect for exam prep.",
+          "Free AI study guide generator. Paste notes or upload a PDF for key concepts, definitions, summaries, and practice questions.",
       },
       { property: "og:title", content: "Free AI Study Guide Generator — QuizGen" },
       {
