@@ -2,7 +2,7 @@ import { createServerFn } from "@tanstack/react-start";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 import { z } from "zod";
 import { generateObject } from "ai";
-import { getGeminiProvider } from "./ai-gateway.server";
+import { getAIProvider } from "./ai-gateway.server";
 
 const GenerateInput = z.object({
   notes: z.string().min(50).max(60000),
@@ -31,10 +31,10 @@ export const generateQuiz = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .validator((input: unknown) => GenerateInput.parse(input))
   .handler(async ({ data, context }) => {
-    const gemini = getGeminiProvider();
+    const groq = getAIProvider();
     const notes = trimToWords(data.notes, 2000);
 
-    const prompt = `Generate exactly ${data.numQuestions} multiple choice questions at ${data.difficulty} difficulty from these study notes. Each question: 4 options, exactly one correct (correct_answer is the index 0-3).
+    const prompt = `Generate exactly ${data.numQuestions} multiple choice questions at ${data.difficulty} difficulty from these study notes. Each question: 4 options, exactly one correct (correct_answer is the index 0-3). Respond in JSON.
 
 NOTES:
 ${notes}`;
@@ -42,18 +42,21 @@ ${notes}`;
     let questions: z.infer<typeof QuestionSchema>[];
     try {
       const { object } = await generateObject({
-        model: gemini("gemini-2.0-flash"),
+        model: groq("llama-3.3-70b-versatile"),
         schema: z.object({ questions: z.array(QuestionSchema).min(1) }),
         prompt,
       });
       questions = object.questions;
     } catch (e: any) {
       const msg = String(e?.message ?? e);
+      console.error("[generateQuiz] AI error:", msg, e);
       if (msg.includes("429"))
         throw new Error("AI rate limit reached. Please wait a moment and try again.");
       if (msg.includes("402"))
         throw new Error("AI credits exhausted. Please add credits in your workspace.");
-      throw new Error("Quiz generation failed, please try again.");
+      if (msg.includes("API_KEY_INVALID") || msg.includes("API key not valid"))
+        throw new Error("Invalid Google AI API key. Please check your GOOGLE_GENERATIVE_AI_API_KEY in .env.");
+      throw new Error(`Quiz generation failed: ${msg}`);
     }
 
     const { supabase, userId } = context;

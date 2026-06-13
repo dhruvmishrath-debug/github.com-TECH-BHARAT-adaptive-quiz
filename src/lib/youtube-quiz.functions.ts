@@ -2,7 +2,7 @@ import { createServerFn } from "@tanstack/react-start";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 import { z } from "zod";
 import { generateObject } from "ai";
-import { getGeminiProvider } from "./ai-gateway.server";
+import { getAIProvider } from "./ai-gateway.server";
 
 const GenerateInput = z.object({
   url: z.string().url().max(500),
@@ -39,10 +39,10 @@ export const generateYouTubeQuiz = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .validator((input: unknown) => GenerateInput.parse(input))
   .handler(async ({ data }): Promise<YouTubeQuiz> => {
-    const gemini = getGeminiProvider();
+    const groq = getAIProvider();
     const transcript = trimToWords(data.transcript ?? "", 2500);
 
-    const prompt = `You are an expert study coach. Create a multiple-choice quiz to help a student review a YouTube lecture or educational video.
+    const prompt = `You are an expert study coach. Create a multiple-choice quiz to help a student review a YouTube lecture or educational video. Respond in JSON.
 
 Video URL: ${data.url}
 Video topic / title: ${data.topic}
@@ -52,7 +52,7 @@ Generate exactly ${data.numQuestions} questions. Each question must have 4 disti
 
     try {
       const { object } = await generateObject({
-        model: gemini("gemini-2.0-flash"),
+        model: groq("llama-3.3-70b-versatile"),
         schema: QuizSchema,
         prompt,
       });
