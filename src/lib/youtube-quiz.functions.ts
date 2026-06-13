@@ -38,7 +38,7 @@ function trimToWords(text: string, max: number): string {
 export const generateYouTubeQuiz = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .validator((input: unknown) => GenerateInput.parse(input))
-  .handler(async ({ data }): Promise<YouTubeQuiz> => {
+  .handler(async ({ data, context }) => {
     const groq = getAIProvider();
     const transcript = trimToWords(data.transcript ?? "", 2500);
 
@@ -50,6 +50,7 @@ ${transcript ? `Transcript / notes from the video:\n${transcript}` : "No transcr
 
 Generate exactly ${data.numQuestions} questions. Each question must have 4 distinct options and a brief explanation of the correct answer. Cover the most important concepts a student should remember after watching this video.`;
 
+    let quizResult: YouTubeQuiz;
     try {
       const { object } = await generateObject({
         model: groq("meta-llama/llama-4-scout-17b-16e-instruct"),
@@ -57,13 +58,45 @@ Generate exactly ${data.numQuestions} questions. Each question must have 4 disti
         schema: QuizSchema,
         prompt,
       });
-      return object;
+      quizResult = object;
     } catch (e: any) {
       const msg = String(e?.message ?? e);
+      console.error("[generateYouTubeQuiz] AI error:", msg, e);
       if (msg.includes("429"))
         throw new Error("AI rate limit reached. Please wait a moment and try again.");
       if (msg.includes("402"))
         throw new Error("AI credits exhausted. Please add credits in your workspace.");
-      throw new Error("Quiz generation failed, please try again.");
+      throw new Error(`Quiz generation failed: ${msg}`);
     }
+
+    // Save quiz to database so it appears in history and opens in the quiz page
+    const { supabase, userId } = context;
+    const { data: quiz, error: qErr } = await supabase
+      .from("quizzes")
+      .insert({
+        user_id: userId,
+        title: quizResult.title || `${data.topic} — YouTube Quiz`,
+        subject: data.topic,
+        difficulty: "Mixed",
+        total_questions: quizResult.questions.length,
+      })
+      .select()
+      .single();
+    if (qErr || !quiz) throw new Error(qErr?.message ?? "Failed to save quiz");
+
+    const rows = quizResult.questions.map((q, i) => ({
+      quiz_id: quiz.id,
+      position: i,
+      question_text: q.question,
+      option_a: q.options[0],
+      option_b: q.options[1],
+      option_c: q.options[2],
+      option_d: q.options[3],
+      correct_answer_index: q.correct_index,
+      explanation: q.explanation ?? "",
+    }));
+    const { error: qsErr } = await supabase.from("questions").insert(rows);
+    if (qsErr) throw new Error(qsErr.message);
+
+    return { quizId: quiz.id as string };
   });

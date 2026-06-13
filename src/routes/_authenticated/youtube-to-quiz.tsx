@@ -1,13 +1,20 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, useRouter } from "@tanstack/react-router";
 import { useState } from "react";
 import { useServerFn } from "@tanstack/react-start";
-import { generateYouTubeQuiz, type YouTubeQuiz } from "@/lib/youtube-quiz.functions";
+import { generateYouTubeQuiz } from "@/lib/youtube-quiz.functions";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { toast } from "sonner";
-import { Sparkles, Youtube, Check, X } from "lucide-react";
+import { Sparkles, Youtube } from "lucide-react";
 
 export const Route = createFileRoute("/_authenticated/youtube-to-quiz")({
   head: () => ({
@@ -51,14 +58,13 @@ function extractVideoId(url: string): string | null {
 }
 
 function YouTubeToQuizPage() {
+  const router = useRouter();
   const generate = useServerFn(generateYouTubeQuiz);
   const [url, setUrl] = useState("");
   const [topic, setTopic] = useState("");
   const [transcript, setTranscript] = useState("");
+  const [numQuestions, setNumQuestions] = useState<number>(5);
   const [loading, setLoading] = useState(false);
-  const [quiz, setQuiz] = useState<YouTubeQuiz | null>(null);
-  const [picks, setPicks] = useState<Record<number, number>>({});
-  const [showAnswers, setShowAnswers] = useState(false);
 
   const videoId = extractVideoId(url);
 
@@ -74,23 +80,17 @@ function YouTubeToQuizPage() {
       return;
     }
     setLoading(true);
-    setQuiz(null);
-    setPicks({});
-    setShowAnswers(false);
     try {
-      const result = await generate({ data: { url, topic, transcript, numQuestions: 5 } });
-      setQuiz(result);
+      toast.info("Generating your quiz with AI…");
+      const { quizId } = await generate({ data: { url, topic, transcript, numQuestions } });
+      toast.success("Quiz ready!");
+      router.navigate({ to: "/quiz/$quizId", params: { quizId } });
     } catch (e: any) {
       toast.error(e?.message ?? "Could not generate the quiz.");
     } finally {
       setLoading(false);
     }
   }
-
-  const score =
-    quiz && showAnswers
-      ? quiz.questions.reduce((s, q, i) => s + (picks[i] === q.correct_index ? 1 : 0), 0)
-      : 0;
 
   return (
     <div className="space-y-8">
@@ -163,92 +163,33 @@ function YouTubeToQuizPage() {
               </p>
             </div>
 
-            <Button onClick={handleGenerate} disabled={loading} size="lg" className="rounded-xl">
+            <div>
+              <Label>Number of questions</Label>
+              <Select value={String(numQuestions)} onValueChange={(v) => setNumQuestions(Number(v))}>
+                <SelectTrigger className="mt-1.5">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  {[3, 5, 7, 10, 15].map((n) => (
+                    <SelectItem key={n} value={String(n)}>
+                      {n} questions
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+
+            <Button onClick={handleGenerate} disabled={loading} size="lg" className="rounded-xl shadow-warm">
               {loading ? (
                 "Generating quiz…"
               ) : (
                 <>
-                  Generate quiz <Sparkles className="ml-2 h-4 w-4" />
+                  <Sparkles className="mr-2 h-4 w-4" /> Generate Quiz
                 </>
               )}
             </Button>
           </div>
         </div>
-
-        {quiz && (
-          <div className="mt-8 space-y-5">
-            <div className="rounded-3xl border border-border bg-card p-6 shadow-soft">
-              <h2 className="font-display text-2xl font-bold">{quiz.title}</h2>
-              <p className="mt-2 text-sm text-muted-foreground">{quiz.summary}</p>
-            </div>
-
-            {quiz.questions.map((q, i) => (
-              <div key={i} className="rounded-2xl border border-border bg-card p-5 shadow-soft">
-                <p className="text-xs font-bold uppercase tracking-wider text-muted-foreground">
-                  Question {i + 1}
-                </p>
-                <p className="mt-1 font-display text-lg font-bold leading-snug">{q.question}</p>
-                <div className="mt-3 space-y-2">
-                  {q.options.map((opt, oi) => {
-                    const picked = picks[i] === oi;
-                    const correct = oi === q.correct_index;
-                    const style = showAnswers
-                      ? correct
-                        ? "border-success bg-success/10"
-                        : picked
-                          ? "border-destructive bg-destructive/10"
-                          : "border-border"
-                      : picked
-                        ? "border-primary bg-primary/5"
-                        : "border-border hover:border-primary/50";
-                    return (
-                      <button
-                        key={oi}
-                        type="button"
-                        disabled={showAnswers}
-                        onClick={() => setPicks((p) => ({ ...p, [i]: oi }))}
-                        className={`flex w-full items-start gap-3 rounded-lg border-2 p-3 text-left transition ${style}`}
-                      >
-                        <span className="grid h-6 w-6 shrink-0 place-items-center rounded bg-secondary text-xs font-bold">
-                          {String.fromCharCode(65 + oi)}
-                        </span>
-                        <span className="text-sm">{opt}</span>
-                        {showAnswers && correct && (
-                          <Check className="ml-auto h-4 w-4 text-success" />
-                        )}
-                        {showAnswers && picked && !correct && (
-                          <X className="ml-auto h-4 w-4 text-destructive" />
-                        )}
-                      </button>
-                    );
-                  })}
-                </div>
-                {showAnswers && (
-                  <div className="mt-3 rounded-lg bg-secondary/60 p-3 text-sm">
-                    <span className="font-bold">Why:</span> {q.explanation}
-                  </div>
-                )}
-              </div>
-            ))}
-
-            <div className="rounded-3xl border border-border bg-card p-6 text-center shadow-soft">
-              {showAnswers ? (
-                <>
-                  <p className="font-display text-xl font-bold">
-                    You scored {score} / {quiz.questions.length}
-                  </p>
-                  <p className="mt-1 text-sm text-muted-foreground">
-                    Great job! Try generating quizzes from your own PDFs and notes too.
-                  </p>
-                </>
-              ) : (
-                <Button onClick={() => setShowAnswers(true)} className="rounded-xl">
-                  Reveal answers
-                </Button>
-              )}
-            </div>
-          </div>
-        )}
       </section>
 
       <section className="mx-auto max-w-4xl">
@@ -266,8 +207,8 @@ function YouTubeToQuizPage() {
               desc: "Paste YouTube's auto-transcript for the sharpest questions.",
             },
             {
-              title: "3. Practice and self-test",
-              desc: "Get instant multiple-choice questions with explanations.",
+              title: "3. Take the quiz & track progress",
+              desc: "Get instant multiple-choice questions saved to your history.",
             },
           ].map((s) => (
             <div key={s.title} className="rounded-2xl border border-border bg-card p-5 shadow-soft">
