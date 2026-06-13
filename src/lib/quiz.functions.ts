@@ -24,7 +24,7 @@ const QuestionSchema = z.object({
   question: z.string().min(3),
   options: z.array(z.string().min(1)).length(4),
   correct_answer: z.number().int().min(0).max(3),
-  explanation: z.string().default(""),
+  explanation: z.string().min(1),
 });
 
 export const generateQuiz = createServerFn({ method: "POST" })
