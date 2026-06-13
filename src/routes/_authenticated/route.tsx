@@ -38,7 +38,6 @@ function AuthedLayout() {
   const navLinks = [
     { to: "/dashboard" as const, label: "Dashboard" },
     { to: "/upload" as const, label: "New Quiz" },
-    { to: "/flashcards" as const, label: "Flashcards" },
     { to: "/study-guide" as const, label: "Study Guide" },
     { to: "/youtube-to-quiz" as const, label: "YouTube Quiz" },
     { to: "/my-quizzes" as const, label: "My Quizzes" },

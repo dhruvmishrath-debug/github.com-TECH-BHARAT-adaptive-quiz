@@ -18,7 +18,6 @@ import { Route as AuthenticatedUploadRouteImport } from './routes/_authenticated
 import { Route as AuthenticatedStudyGuideRouteImport } from './routes/_authenticated/study-guide'
 import { Route as AuthenticatedMyQuizzesRouteImport } from './routes/_authenticated/my-quizzes'
 import { Route as AuthenticatedHistoryRouteImport } from './routes/_authenticated/history'
-import { Route as AuthenticatedFlashcardsRouteImport } from './routes/_authenticated/flashcards'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
 import { Route as AuthenticatedResultsAttemptIdRouteImport } from './routes/_authenticated/results.$attemptId'
 import { Route as AuthenticatedQuizQuizIdRouteImport } from './routes/_authenticated/quiz.$quizId'
@@ -68,11 +67,6 @@ const AuthenticatedHistoryRoute = AuthenticatedHistoryRouteImport.update({
   path: '/history',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
-const AuthenticatedFlashcardsRoute = AuthenticatedFlashcardsRouteImport.update({
-  id: '/flashcards',
-  path: '/flashcards',
-  getParentRoute: () => AuthenticatedRouteRoute,
-} as any)
 const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
   id: '/dashboard',
   path: '/dashboard',
@@ -95,7 +89,6 @@ export interface FileRoutesByFullPath {
   '/auth': typeof AuthRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
-  '/flashcards': typeof AuthenticatedFlashcardsRoute
   '/history': typeof AuthenticatedHistoryRoute
   '/my-quizzes': typeof AuthenticatedMyQuizzesRoute
   '/study-guide': typeof AuthenticatedStudyGuideRoute
@@ -109,7 +102,6 @@ export interface FileRoutesByTo {
   '/auth': typeof AuthRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
-  '/flashcards': typeof AuthenticatedFlashcardsRoute
   '/history': typeof AuthenticatedHistoryRoute
   '/my-quizzes': typeof AuthenticatedMyQuizzesRoute
   '/study-guide': typeof AuthenticatedStudyGuideRoute
@@ -125,7 +117,6 @@ export interface FileRoutesById {
   '/auth': typeof AuthRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
-  '/_authenticated/flashcards': typeof AuthenticatedFlashcardsRoute
   '/_authenticated/history': typeof AuthenticatedHistoryRoute
   '/_authenticated/my-quizzes': typeof AuthenticatedMyQuizzesRoute
   '/_authenticated/study-guide': typeof AuthenticatedStudyGuideRoute
@@ -141,7 +132,6 @@ export interface FileRouteTypes {
     | '/auth'
     | '/sitemap.xml'
     | '/dashboard'
-    | '/flashcards'
     | '/history'
     | '/my-quizzes'
     | '/study-guide'
@@ -155,7 +145,6 @@ export interface FileRouteTypes {
     | '/auth'
     | '/sitemap.xml'
     | '/dashboard'
-    | '/flashcards'
     | '/history'
     | '/my-quizzes'
     | '/study-guide'
@@ -170,7 +159,6 @@ export interface FileRouteTypes {
     | '/auth'
     | '/sitemap.xml'
     | '/_authenticated/dashboard'
-    | '/_authenticated/flashcards'
     | '/_authenticated/history'
     | '/_authenticated/my-quizzes'
     | '/_authenticated/study-guide'
@@ -252,13 +240,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedHistoryRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
-    '/_authenticated/flashcards': {
-      id: '/_authenticated/flashcards'
-      path: '/flashcards'
-      fullPath: '/flashcards'
-      preLoaderRoute: typeof AuthenticatedFlashcardsRouteImport
-      parentRoute: typeof AuthenticatedRouteRoute
-    }
     '/_authenticated/dashboard': {
       id: '/_authenticated/dashboard'
       path: '/dashboard'
@@ -285,7 +266,6 @@ declare module '@tanstack/react-router' {
 
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
-  AuthenticatedFlashcardsRoute: typeof AuthenticatedFlashcardsRoute
   AuthenticatedHistoryRoute: typeof AuthenticatedHistoryRoute
   AuthenticatedMyQuizzesRoute: typeof AuthenticatedMyQuizzesRoute
   AuthenticatedStudyGuideRoute: typeof AuthenticatedStudyGuideRoute
@@ -297,7 +277,6 @@ interface AuthenticatedRouteRouteChildren {
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
-  AuthenticatedFlashcardsRoute: AuthenticatedFlashcardsRoute,
   AuthenticatedHistoryRoute: AuthenticatedHistoryRoute,
   AuthenticatedMyQuizzesRoute: AuthenticatedMyQuizzesRoute,
   AuthenticatedStudyGuideRoute: AuthenticatedStudyGuideRoute,
@@ -319,3 +298,13 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
