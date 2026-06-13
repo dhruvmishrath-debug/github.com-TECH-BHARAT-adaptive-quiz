@@ -5,7 +5,7 @@ import { generateObject } from "ai";
 import { getAIProvider } from "./ai-gateway.server";
 
 const GenerateInput = z.object({
-  notes: z.string().min(50).max(60000),
+  notes: z.string().min(50).max(1000000),
   topic: z.string().min(1).max(200).default("Study Guide"),
 });
 

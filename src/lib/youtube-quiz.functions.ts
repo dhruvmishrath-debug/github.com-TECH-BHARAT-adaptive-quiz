@@ -7,7 +7,7 @@ import { getAIProvider } from "./ai-gateway.server";
 const GenerateInput = z.object({
   url: z.string().url().max(500),
   topic: z.string().min(1).max(200),
-  transcript: z.string().max(60000).optional().default(""),
+  transcript: z.string().max(1000000).optional().default(""),
   numQuestions: z.number().int().min(3).max(15).default(5),
 });
 
