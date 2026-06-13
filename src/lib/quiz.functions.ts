@@ -2,7 +2,7 @@ import { createServerFn } from "@tanstack/react-start";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 import { z } from "zod";
 import { generateObject } from "ai";
-import { createLovableAiGatewayProvider } from "./ai-gateway.server";
+import { getGeminiProvider } from "./ai-gateway.server";
 
 const GenerateInput = z.object({
   notes: z.string().min(50).max(60000),
@@ -31,11 +31,8 @@ export const generateQuiz = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .validator((input: unknown) => GenerateInput.parse(input))
   .handler(async ({ data, context }) => {
-    const key = process.env.LOVABLE_API_KEY;
-    if (!key) throw new Error("AI is not configured. Please try again later.");
-
+    const gemini = getGeminiProvider();
     const notes = trimToWords(data.notes, 2000);
-    const gateway = createLovableAiGatewayProvider(key);
 
     const prompt = `Generate exactly ${data.numQuestions} multiple choice questions at ${data.difficulty} difficulty from these study notes. Each question: 4 options, exactly one correct (correct_answer is the index 0-3).
 
@@ -45,7 +42,7 @@ ${notes}`;
     let questions: z.infer<typeof QuestionSchema>[];
     try {
       const { object } = await generateObject({
-        model: gateway("google/gemini-3.1-flash-lite-preview"),
+        model: gemini("gemini-2.0-flash"),
         schema: z.object({ questions: z.array(QuestionSchema).min(1) }),
         prompt,
       });

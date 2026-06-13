@@ -2,7 +2,7 @@ import { createServerFn } from "@tanstack/react-start";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 import { z } from "zod";
 import { generateObject } from "ai";
-import { createLovableAiGatewayProvider } from "./ai-gateway.server";
+import { getGeminiProvider } from "./ai-gateway.server";
 
 const GenerateInput = z.object({
   notes: z.string().min(50).max(60000),
@@ -46,11 +46,8 @@ export const generateStudyGuide = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .validator((input: unknown) => GenerateInput.parse(input))
   .handler(async ({ data }): Promise<StudyGuide> => {
-    const key = process.env.LOVABLE_API_KEY;
-    if (!key) throw new Error("AI is not configured. Please try again later.");
-
+    const gemini = getGeminiProvider();
     const notes = trimToWords(data.notes, 2500);
-    const gateway = createLovableAiGatewayProvider(key);
 
     const prompt = `You are an expert study coach. Build a concise, exam-ready study guide from the notes below. Extract the most important concepts, definitions, summary bullets, and practice questions a student should review. Use the topic "${data.topic}" as the title focus.
 
@@ -59,7 +56,7 @@ ${notes}`;
 
     try {
       const { object } = await generateObject({
-        model: gateway("google/gemini-3.1-flash-lite-preview"),
+        model: gemini("gemini-2.0-flash"),
         schema: StudyGuideSchema,
         prompt,
       });

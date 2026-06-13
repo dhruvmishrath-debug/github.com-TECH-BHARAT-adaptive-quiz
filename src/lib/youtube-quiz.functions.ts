@@ -2,7 +2,7 @@ import { createServerFn } from "@tanstack/react-start";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 import { z } from "zod";
 import { generateObject } from "ai";
-import { createLovableAiGatewayProvider } from "./ai-gateway.server";
+import { getGeminiProvider } from "./ai-gateway.server";
 
 const GenerateInput = z.object({
   url: z.string().url().max(500),
@@ -39,11 +39,8 @@ export const generateYouTubeQuiz = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .validator((input: unknown) => GenerateInput.parse(input))
   .handler(async ({ data }): Promise<YouTubeQuiz> => {
-    const key = process.env.LOVABLE_API_KEY;
-    if (!key) throw new Error("AI is not configured. Please try again later.");
-
+    const gemini = getGeminiProvider();
     const transcript = trimToWords(data.transcript ?? "", 2500);
-    const gateway = createLovableAiGatewayProvider(key);
 
     const prompt = `You are an expert study coach. Create a multiple-choice quiz to help a student review a YouTube lecture or educational video.
 
@@ -55,7 +52,7 @@ Generate exactly ${data.numQuestions} questions. Each question must have 4 disti
 
     try {
       const { object } = await generateObject({
-        model: gateway("google/gemini-3.1-flash-lite-preview"),
+        model: gemini("gemini-2.0-flash"),
         schema: QuizSchema,
         prompt,
       });
