@@ -52,7 +52,8 @@ Generate exactly ${data.numQuestions} questions. Each question must have 4 disti
 
     try {
       const { object } = await generateObject({
-        model: groq("llama-3.3-70b-versatile"),
+        model: groq("meta-llama/llama-4-scout-17b-16e-instruct"),
+        mode: "tool",
         schema: QuizSchema,
         prompt,
       });

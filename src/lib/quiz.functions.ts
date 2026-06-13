@@ -42,7 +42,8 @@ ${notes}`;
     let questions: z.infer<typeof QuestionSchema>[];
     try {
       const { object } = await generateObject({
-        model: groq("llama-3.3-70b-versatile"),
+        model: groq("meta-llama/llama-4-scout-17b-16e-instruct"),
+        mode: "tool",
         schema: z.object({ questions: z.array(QuestionSchema).min(1) }),
         prompt,
       });

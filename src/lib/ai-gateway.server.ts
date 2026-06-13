@@ -1,7 +1,7 @@
-import { createOpenAICompatible } from "@ai-sdk/openai-compatible";
+import { createGroq } from "@ai-sdk/groq";
 
 /**
- * Creates a Groq AI provider using the OpenAI-compatible API.
+ * Creates a Groq AI provider using the dedicated @ai-sdk/groq package.
  * Reads the API key from the GROQ_API_KEY environment variable.
  */
 export function getAIProvider() {
@@ -9,11 +9,5 @@ export function getAIProvider() {
   if (!apiKey) {
     throw new Error("AI is not configured. Set GROQ_API_KEY in your .env file.");
   }
-  return createOpenAICompatible({
-    name: "groq",
-    baseURL: "https://api.groq.com/openai/v1",
-    headers: {
-      Authorization: `Bearer ${apiKey}`,
-    },
-  });
+  return createGroq({ apiKey });
 }
