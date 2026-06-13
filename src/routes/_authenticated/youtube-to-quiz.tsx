@@ -1,4 +1,4 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { useServerFn } from "@tanstack/react-start";
 import { generateYouTubeQuiz, type YouTubeQuiz } from "@/lib/youtube-quiz.functions";
@@ -7,16 +7,16 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
-import { Sparkles, Youtube, ArrowRight, Check, X, Play, Menu } from "lucide-react";
+import { Sparkles, Youtube, Check, X } from "lucide-react";
 
-export const Route = createFileRoute("/youtube-to-quiz")({
+export const Route = createFileRoute("/_authenticated/youtube-to-quiz")({
   head: () => ({
     meta: [
-      { title: "Free YouTube to Quiz Generator — Video to Quiz with AI" },
+      { title: "YouTube to Quiz Generator — QuizGen" },
       {
         name: "description",
         content:
-          "Free AI video to quiz tool. Paste a YouTube link and turn any lecture, tutorial, or study video into a multiple-choice practice quiz in seconds.",
+          "AI video to quiz tool. Paste a YouTube link and turn any lecture, tutorial, or study video into a multiple-choice practice quiz in seconds.",
       },
       {
         property: "og:title",
@@ -25,27 +25,12 @@ export const Route = createFileRoute("/youtube-to-quiz")({
       {
         property: "og:description",
         content:
-          "Convert YouTube lectures into AI-generated multiple-choice quizzes. The smartest AI homework helper for video learners.",
+          "Convert YouTube lectures into AI-generated multiple-choice quizzes.",
       },
       { property: "og:url", content: "https://lnct-tech-bharat.lovable.app/youtube-to-quiz" },
+      { name: "robots", content: "noindex" },
     ],
     links: [{ rel: "canonical", href: "https://lnct-tech-bharat.lovable.app/youtube-to-quiz" }],
-    scripts: [
-      {
-        type: "application/ld+json",
-        children: JSON.stringify({
-          "@context": "https://schema.org",
-          "@type": "WebApplication",
-          name: "QuizGen YouTube to Quiz Generator",
-          applicationCategory: "EducationApplication",
-          operatingSystem: "Web",
-          url: "https://lnct-tech-bharat.lovable.app/youtube-to-quiz",
-          description:
-            "Free AI tool that turns any YouTube video into a multiple-choice quiz so students can self-test on lecture content.",
-          offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
-        }),
-      },
-    ],
   }),
   component: YouTubeToQuizPage,
 });
@@ -74,7 +59,6 @@ function YouTubeToQuizPage() {
   const [quiz, setQuiz] = useState<YouTubeQuiz | null>(null);
   const [picks, setPicks] = useState<Record<number, number>>({});
   const [showAnswers, setShowAnswers] = useState(false);
-  const [mobileOpen, setMobileOpen] = useState(false);
 
   const videoId = extractVideoId(url);
 
@@ -109,69 +93,10 @@ function YouTubeToQuizPage() {
       : 0;
 
   return (
-    <div className="min-h-screen">
-      <div className="h-9 bg-gradient-primary" />
-
-      <header className="relative mx-auto max-w-5xl px-4 py-5">
-        <div className="flex items-center justify-between">
-          <Link to="/" className="flex items-center gap-2 font-display text-xl font-extrabold">
-            <span className="grid h-10 w-10 place-items-center rounded-2xl bg-gradient-primary text-primary-foreground shadow-pop">
-              <Sparkles className="h-5 w-5" />
-            </span>
-            QuizGen
-          </Link>
-          <nav className="hidden items-center gap-6 text-sm font-semibold text-foreground/80 md:flex">
-            <Link to="/" className="hover:text-primary">
-              Home
-            </Link>
-            <Link to="/study-guide" className="hover:text-primary">
-              Study Guide
-            </Link>
-            <Link to="/youtube-to-quiz" className="text-primary">
-              YouTube → Quiz
-            </Link>
-            <Link to="/auth" className="hover:text-primary">
-              Sign in
-            </Link>
-          </nav>
-          <div className="flex items-center gap-2">
-            <Link to="/auth" className="hidden md:inline-flex">
-              <Button className="rounded-xl">
-                Get started <ArrowRight className="ml-1 h-4 w-4" />
-              </Button>
-            </Link>
-            <button
-              className="grid h-10 w-10 place-items-center rounded-xl border border-border bg-card md:hidden"
-              aria-label={mobileOpen ? "Close menu" : "Open menu"}
-              onClick={() => setMobileOpen(!mobileOpen)}
-            >
-              {mobileOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-            </button>
-          </div>
-        </div>
-        {mobileOpen && (
-          <nav className="mt-4 flex flex-col gap-3 rounded-2xl border border-border bg-card p-4 shadow-soft md:hidden">
-            <Link to="/" className="text-sm font-semibold hover:text-primary" onClick={() => setMobileOpen(false)}>
-              Home
-            </Link>
-            <Link to="/study-guide" className="text-sm font-semibold hover:text-primary" onClick={() => setMobileOpen(false)}>
-              Study Guide
-            </Link>
-            <Link to="/youtube-to-quiz" className="text-sm font-semibold text-primary" onClick={() => setMobileOpen(false)}>
-              YouTube → Quiz
-            </Link>
-            <Link to="/auth" onClick={() => setMobileOpen(false)}>
-              <Button className="w-full rounded-xl">
-                Get started <ArrowRight className="ml-1 h-4 w-4" />
-              </Button>
-            </Link>
-          </nav>
-        )}
-      </header>
-
-      <section className="mx-auto max-w-3xl px-4 pt-6 pb-10 text-center">
+    <div className="space-y-8">
+      <section className="text-center">
         <span className="inline-flex items-center gap-2 rounded-full bg-tint-pink px-3 py-1 text-xs font-bold text-foreground">
-          <Youtube className="h-4 w-4 text-primary" /> Free AI homework helper
+          <Youtube className="h-4 w-4 text-primary" /> AI Video Quiz
         </span>
         <h1 className="mt-4 font-display text-4xl font-black leading-tight md:text-5xl">
           Turn any <span className="text-primary">YouTube video</span> into a quiz
@@ -182,7 +107,7 @@ function YouTubeToQuizPage() {
         </p>
       </section>
 
-      <section className="mx-auto max-w-3xl px-4 pb-14">
+      <section className="mx-auto max-w-3xl">
         <div className="rounded-3xl border border-border bg-card p-6 shadow-soft md:p-8">
           <div className="grid gap-4">
             <div>
@@ -313,14 +238,8 @@ function YouTubeToQuizPage() {
                     You scored {score} / {quiz.questions.length}
                   </p>
                   <p className="mt-1 text-sm text-muted-foreground">
-                    Sign up to save quizzes, track history, and generate quizzes from your PDFs and
-                    notes too.
+                    Great job! Try generating quizzes from your own PDFs and notes too.
                   </p>
-                  <Link to="/auth" search={{ mode: "signup" } as never}>
-                    <Button className="mt-4 rounded-xl">
-                      <Play className="mr-2 h-4 w-4" /> Save my quizzes
-                    </Button>
-                  </Link>
                 </>
               ) : (
                 <Button onClick={() => setShowAnswers(true)} className="rounded-xl">
@@ -332,7 +251,7 @@ function YouTubeToQuizPage() {
         )}
       </section>
 
-      <section className="mx-auto max-w-4xl px-4 pb-20">
+      <section className="mx-auto max-w-4xl">
         <h2 className="text-center font-display text-3xl font-black">
           How the YouTube to Quiz tool works
         </h2>
@@ -358,10 +277,6 @@ function YouTubeToQuizPage() {
           ))}
         </div>
       </section>
-
-      <footer className="border-t border-border/60 py-10 text-center text-sm text-muted-foreground">
-        <p>© {new Date().getFullYear()} QuizGen · The AI homework helper for video learners.</p>
-      </footer>
     </div>
   );
 }

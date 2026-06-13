@@ -17,44 +17,27 @@ import {
   HelpCircle,
   ArrowRight,
   Printer,
-  Menu,
-  X,
 } from "lucide-react";
 
-export const Route = createFileRoute("/study-guide")({
+export const Route = createFileRoute("/_authenticated/study-guide")({
   head: () => ({
     meta: [
-      { title: "Free AI Study Guide Generator — QuizGen" },
+      { title: "AI Study Guide Generator — QuizGen" },
       {
         name: "description",
         content:
-          "Free AI study guide generator. Paste notes or upload a PDF for key concepts, definitions, summaries, and practice questions.",
+          "AI study guide generator. Paste notes or upload a PDF for key concepts, definitions, summaries, and practice questions.",
       },
-      { property: "og:title", content: "Free AI Study Guide Generator — QuizGen" },
+      { property: "og:title", content: "AI Study Guide Generator — QuizGen" },
       {
         property: "og:description",
         content:
           "Turn lecture notes or PDFs into an exam-ready study guide with key concepts, definitions, and practice questions in seconds.",
       },
       { property: "og:url", content: "https://lnct-tech-bharat.lovable.app/study-guide" },
+      { name: "robots", content: "noindex" },
     ],
     links: [{ rel: "canonical", href: "https://lnct-tech-bharat.lovable.app/study-guide" }],
-    scripts: [
-      {
-        type: "application/ld+json",
-        children: JSON.stringify({
-          "@context": "https://schema.org",
-          "@type": "WebApplication",
-          name: "QuizGen Study Guide Generator",
-          applicationCategory: "EducationApplication",
-          operatingSystem: "Web",
-          url: "https://lnct-tech-bharat.lovable.app/study-guide",
-          description:
-            "AI tool that turns any notes or PDF into a structured study guide with key concepts, definitions, summary points, and practice questions.",
-          offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
-        }),
-      },
-    ],
   }),
   component: StudyGuidePage,
 });
@@ -65,7 +48,6 @@ function StudyGuidePage() {
   const [notes, setNotes] = useState("");
   const [loading, setLoading] = useState(false);
   const [guide, setGuide] = useState<StudyGuide | null>(null);
-  const [mobileOpen, setMobileOpen] = useState(false);
 
   async function handleFile(e: React.ChangeEvent<HTMLInputElement>) {
     const f = e.target.files?.[0];
@@ -101,65 +83,10 @@ function StudyGuidePage() {
   }
 
   return (
-    <div className="min-h-screen">
-      <div className="h-9 bg-gradient-primary" />
-      <header className="relative mx-auto max-w-6xl px-4 py-5">
-        <div className="flex items-center justify-between">
-          <Link to="/" className="flex items-center gap-2 font-display text-xl font-extrabold">
-            <span className="grid h-10 w-10 place-items-center rounded-2xl bg-gradient-primary text-primary-foreground shadow-pop">
-              <Sparkles className="h-5 w-5" />
-            </span>
-            QuizGen
-          </Link>
-          <nav className="hidden items-center gap-7 text-sm font-semibold text-foreground/80 md:flex">
-            <Link to="/" className="hover:text-primary">
-              Home
-            </Link>
-            <Link to="/study-guide" className="text-primary">
-              Study Guide
-            </Link>
-            <Link to="/youtube-to-quiz" className="hover:text-primary">
-              YouTube → Quiz
-            </Link>
-          </nav>
-          <div className="flex items-center gap-2">
-            <Link to="/auth" className="hidden md:inline-flex">
-              <Button className="rounded-xl bg-primary text-primary-foreground shadow-pop hover:bg-primary/90">
-                Sign in <ArrowRight className="ml-1 h-4 w-4" />
-              </Button>
-            </Link>
-            <button
-              className="grid h-10 w-10 place-items-center rounded-xl border border-border bg-card md:hidden"
-              aria-label={mobileOpen ? "Close menu" : "Open menu"}
-              onClick={() => setMobileOpen(!mobileOpen)}
-            >
-              {mobileOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-            </button>
-          </div>
-        </div>
-        {mobileOpen && (
-          <nav className="mt-4 flex flex-col gap-3 rounded-2xl border border-border bg-card p-4 shadow-soft md:hidden">
-            <Link to="/" className="text-sm font-semibold hover:text-primary" onClick={() => setMobileOpen(false)}>
-              Home
-            </Link>
-            <Link to="/study-guide" className="text-sm font-semibold text-primary" onClick={() => setMobileOpen(false)}>
-              Study Guide
-            </Link>
-            <Link to="/youtube-to-quiz" className="text-sm font-semibold hover:text-primary" onClick={() => setMobileOpen(false)}>
-              YouTube → Quiz
-            </Link>
-            <Link to="/auth" onClick={() => setMobileOpen(false)}>
-              <Button className="w-full rounded-xl bg-primary text-primary-foreground shadow-pop hover:bg-primary/90">
-                Sign in <ArrowRight className="ml-1 h-4 w-4" />
-              </Button>
-            </Link>
-          </nav>
-        )}
-      </header>
-
-      <section className="mx-auto max-w-4xl px-4 pt-6 pb-10 text-center">
+    <div className="space-y-8">
+      <section className="text-center">
         <span className="inline-flex items-center gap-2 rounded-full bg-tint-purple px-3 py-1 text-xs font-bold text-primary">
-          <Sparkles className="h-3 w-3" /> Free · No signup needed
+          <Sparkles className="h-3 w-3" /> AI-Powered
         </span>
         <h1 className="mt-4 font-display text-4xl font-black leading-tight md:text-5xl">
           AI <span className="text-primary">Study Guide Generator</span>
@@ -170,7 +97,7 @@ function StudyGuidePage() {
         </p>
       </section>
 
-      <section className="mx-auto max-w-4xl px-4 pb-10">
+      <section className="mx-auto max-w-4xl">
         <form
           onSubmit={handleSubmit}
           className="rounded-[2rem] border border-border bg-card p-6 shadow-soft md:p-8"
@@ -245,7 +172,7 @@ function StudyGuidePage() {
       </section>
 
       {guide && (
-        <section className="mx-auto max-w-4xl px-4 pb-16" aria-live="polite">
+        <section className="mx-auto max-w-4xl" aria-live="polite">
           <div className="rounded-[2rem] border border-border bg-card p-6 shadow-clay md:p-10">
             <div className="flex flex-wrap items-start justify-between gap-3">
               <div>
@@ -302,7 +229,7 @@ function StudyGuidePage() {
               <p className="mt-1 text-sm text-primary-foreground/85">
                 Turn the same notes into an adaptive quiz with instant scoring.
               </p>
-              <Link to="/auth" search={{ mode: "signup" } as never} className="mt-4 inline-block">
+              <Link to="/upload" className="mt-4 inline-block">
                 <Button
                   variant="secondary"
                   className="rounded-xl bg-white text-primary hover:bg-white/90"
@@ -314,10 +241,6 @@ function StudyGuidePage() {
           </div>
         </section>
       )}
-
-      <footer className="border-t border-border/60 py-8 text-center text-sm text-muted-foreground">
-        <p>© {new Date().getFullYear()} QuizGen · Study smarter, not longer.</p>
-      </footer>
     </div>
   );
 }

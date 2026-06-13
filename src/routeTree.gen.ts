@@ -9,38 +9,23 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as YoutubeToQuizRouteImport } from './routes/youtube-to-quiz'
-import { Route as StudyGuideRouteImport } from './routes/study-guide'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
-import { Route as FlashcardsRouteImport } from './routes/flashcards'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AuthenticatedYoutubeToQuizRouteImport } from './routes/_authenticated/youtube-to-quiz'
 import { Route as AuthenticatedUploadRouteImport } from './routes/_authenticated/upload'
+import { Route as AuthenticatedStudyGuideRouteImport } from './routes/_authenticated/study-guide'
 import { Route as AuthenticatedMyQuizzesRouteImport } from './routes/_authenticated/my-quizzes'
 import { Route as AuthenticatedHistoryRouteImport } from './routes/_authenticated/history'
+import { Route as AuthenticatedFlashcardsRouteImport } from './routes/_authenticated/flashcards'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
 import { Route as AuthenticatedResultsAttemptIdRouteImport } from './routes/_authenticated/results.$attemptId'
 import { Route as AuthenticatedQuizQuizIdRouteImport } from './routes/_authenticated/quiz.$quizId'
 
-const YoutubeToQuizRoute = YoutubeToQuizRouteImport.update({
-  id: '/youtube-to-quiz',
-  path: '/youtube-to-quiz',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const StudyGuideRoute = StudyGuideRouteImport.update({
-  id: '/study-guide',
-  path: '/study-guide',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
   id: '/sitemap.xml',
   path: '/sitemap.xml',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const FlashcardsRoute = FlashcardsRouteImport.update({
-  id: '/flashcards',
-  path: '/flashcards',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuthRoute = AuthRouteImport.update({
@@ -57,9 +42,20 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedYoutubeToQuizRoute =
+  AuthenticatedYoutubeToQuizRouteImport.update({
+    id: '/youtube-to-quiz',
+    path: '/youtube-to-quiz',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedUploadRoute = AuthenticatedUploadRouteImport.update({
   id: '/upload',
   path: '/upload',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedStudyGuideRoute = AuthenticatedStudyGuideRouteImport.update({
+  id: '/study-guide',
+  path: '/study-guide',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 const AuthenticatedMyQuizzesRoute = AuthenticatedMyQuizzesRouteImport.update({
@@ -70,6 +66,11 @@ const AuthenticatedMyQuizzesRoute = AuthenticatedMyQuizzesRouteImport.update({
 const AuthenticatedHistoryRoute = AuthenticatedHistoryRouteImport.update({
   id: '/history',
   path: '/history',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedFlashcardsRoute = AuthenticatedFlashcardsRouteImport.update({
+  id: '/flashcards',
+  path: '/flashcards',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
@@ -92,28 +93,28 @@ const AuthenticatedQuizQuizIdRoute = AuthenticatedQuizQuizIdRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
-  '/flashcards': typeof FlashcardsRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
-  '/study-guide': typeof StudyGuideRoute
-  '/youtube-to-quiz': typeof YoutubeToQuizRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
+  '/flashcards': typeof AuthenticatedFlashcardsRoute
   '/history': typeof AuthenticatedHistoryRoute
   '/my-quizzes': typeof AuthenticatedMyQuizzesRoute
+  '/study-guide': typeof AuthenticatedStudyGuideRoute
   '/upload': typeof AuthenticatedUploadRoute
+  '/youtube-to-quiz': typeof AuthenticatedYoutubeToQuizRoute
   '/quiz/$quizId': typeof AuthenticatedQuizQuizIdRoute
   '/results/$attemptId': typeof AuthenticatedResultsAttemptIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
-  '/flashcards': typeof FlashcardsRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
-  '/study-guide': typeof StudyGuideRoute
-  '/youtube-to-quiz': typeof YoutubeToQuizRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
+  '/flashcards': typeof AuthenticatedFlashcardsRoute
   '/history': typeof AuthenticatedHistoryRoute
   '/my-quizzes': typeof AuthenticatedMyQuizzesRoute
+  '/study-guide': typeof AuthenticatedStudyGuideRoute
   '/upload': typeof AuthenticatedUploadRoute
+  '/youtube-to-quiz': typeof AuthenticatedYoutubeToQuizRoute
   '/quiz/$quizId': typeof AuthenticatedQuizQuizIdRoute
   '/results/$attemptId': typeof AuthenticatedResultsAttemptIdRoute
 }
@@ -122,14 +123,14 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/auth': typeof AuthRoute
-  '/flashcards': typeof FlashcardsRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
-  '/study-guide': typeof StudyGuideRoute
-  '/youtube-to-quiz': typeof YoutubeToQuizRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
+  '/_authenticated/flashcards': typeof AuthenticatedFlashcardsRoute
   '/_authenticated/history': typeof AuthenticatedHistoryRoute
   '/_authenticated/my-quizzes': typeof AuthenticatedMyQuizzesRoute
+  '/_authenticated/study-guide': typeof AuthenticatedStudyGuideRoute
   '/_authenticated/upload': typeof AuthenticatedUploadRoute
+  '/_authenticated/youtube-to-quiz': typeof AuthenticatedYoutubeToQuizRoute
   '/_authenticated/quiz/$quizId': typeof AuthenticatedQuizQuizIdRoute
   '/_authenticated/results/$attemptId': typeof AuthenticatedResultsAttemptIdRoute
 }
@@ -138,28 +139,28 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/auth'
-    | '/flashcards'
     | '/sitemap.xml'
-    | '/study-guide'
-    | '/youtube-to-quiz'
     | '/dashboard'
+    | '/flashcards'
     | '/history'
     | '/my-quizzes'
+    | '/study-guide'
     | '/upload'
+    | '/youtube-to-quiz'
     | '/quiz/$quizId'
     | '/results/$attemptId'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/auth'
-    | '/flashcards'
     | '/sitemap.xml'
-    | '/study-guide'
-    | '/youtube-to-quiz'
     | '/dashboard'
+    | '/flashcards'
     | '/history'
     | '/my-quizzes'
+    | '/study-guide'
     | '/upload'
+    | '/youtube-to-quiz'
     | '/quiz/$quizId'
     | '/results/$attemptId'
   id:
@@ -167,14 +168,14 @@ export interface FileRouteTypes {
     | '/'
     | '/_authenticated'
     | '/auth'
-    | '/flashcards'
     | '/sitemap.xml'
-    | '/study-guide'
-    | '/youtube-to-quiz'
     | '/_authenticated/dashboard'
+    | '/_authenticated/flashcards'
     | '/_authenticated/history'
     | '/_authenticated/my-quizzes'
+    | '/_authenticated/study-guide'
     | '/_authenticated/upload'
+    | '/_authenticated/youtube-to-quiz'
     | '/_authenticated/quiz/$quizId'
     | '/_authenticated/results/$attemptId'
   fileRoutesById: FileRoutesById
@@ -183,40 +184,16 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   AuthRoute: typeof AuthRoute
-  FlashcardsRoute: typeof FlashcardsRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
-  StudyGuideRoute: typeof StudyGuideRoute
-  YoutubeToQuizRoute: typeof YoutubeToQuizRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/youtube-to-quiz': {
-      id: '/youtube-to-quiz'
-      path: '/youtube-to-quiz'
-      fullPath: '/youtube-to-quiz'
-      preLoaderRoute: typeof YoutubeToQuizRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/study-guide': {
-      id: '/study-guide'
-      path: '/study-guide'
-      fullPath: '/study-guide'
-      preLoaderRoute: typeof StudyGuideRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/sitemap.xml': {
       id: '/sitemap.xml'
       path: '/sitemap.xml'
       fullPath: '/sitemap.xml'
       preLoaderRoute: typeof SitemapDotxmlRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/flashcards': {
-      id: '/flashcards'
-      path: '/flashcards'
-      fullPath: '/flashcards'
-      preLoaderRoute: typeof FlashcardsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/auth': {
@@ -240,11 +217,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated/youtube-to-quiz': {
+      id: '/_authenticated/youtube-to-quiz'
+      path: '/youtube-to-quiz'
+      fullPath: '/youtube-to-quiz'
+      preLoaderRoute: typeof AuthenticatedYoutubeToQuizRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/upload': {
       id: '/_authenticated/upload'
       path: '/upload'
       fullPath: '/upload'
       preLoaderRoute: typeof AuthenticatedUploadRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/study-guide': {
+      id: '/_authenticated/study-guide'
+      path: '/study-guide'
+      fullPath: '/study-guide'
+      preLoaderRoute: typeof AuthenticatedStudyGuideRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/my-quizzes': {
@@ -259,6 +250,13 @@ declare module '@tanstack/react-router' {
       path: '/history'
       fullPath: '/history'
       preLoaderRoute: typeof AuthenticatedHistoryRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/flashcards': {
+      id: '/_authenticated/flashcards'
+      path: '/flashcards'
+      fullPath: '/flashcards'
+      preLoaderRoute: typeof AuthenticatedFlashcardsRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/dashboard': {
@@ -287,18 +285,24 @@ declare module '@tanstack/react-router' {
 
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
+  AuthenticatedFlashcardsRoute: typeof AuthenticatedFlashcardsRoute
   AuthenticatedHistoryRoute: typeof AuthenticatedHistoryRoute
   AuthenticatedMyQuizzesRoute: typeof AuthenticatedMyQuizzesRoute
+  AuthenticatedStudyGuideRoute: typeof AuthenticatedStudyGuideRoute
   AuthenticatedUploadRoute: typeof AuthenticatedUploadRoute
+  AuthenticatedYoutubeToQuizRoute: typeof AuthenticatedYoutubeToQuizRoute
   AuthenticatedQuizQuizIdRoute: typeof AuthenticatedQuizQuizIdRoute
   AuthenticatedResultsAttemptIdRoute: typeof AuthenticatedResultsAttemptIdRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
+  AuthenticatedFlashcardsRoute: AuthenticatedFlashcardsRoute,
   AuthenticatedHistoryRoute: AuthenticatedHistoryRoute,
   AuthenticatedMyQuizzesRoute: AuthenticatedMyQuizzesRoute,
+  AuthenticatedStudyGuideRoute: AuthenticatedStudyGuideRoute,
   AuthenticatedUploadRoute: AuthenticatedUploadRoute,
+  AuthenticatedYoutubeToQuizRoute: AuthenticatedYoutubeToQuizRoute,
   AuthenticatedQuizQuizIdRoute: AuthenticatedQuizQuizIdRoute,
   AuthenticatedResultsAttemptIdRoute: AuthenticatedResultsAttemptIdRoute,
 }
@@ -310,21 +314,8 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   AuthRoute: AuthRoute,
-  FlashcardsRoute: FlashcardsRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
-  StudyGuideRoute: StudyGuideRoute,
-  YoutubeToQuizRoute: YoutubeToQuizRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}

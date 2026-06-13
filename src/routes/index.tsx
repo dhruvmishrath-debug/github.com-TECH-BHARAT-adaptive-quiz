@@ -118,23 +118,17 @@ function Landing() {
             <a href="#categories" className="hover:text-primary">
               What you can study
             </a>
-            <Link to="/study-guide" className="hover:text-primary">
-              Study Guide
-            </Link>
-            <Link to="/flashcards" className="hover:text-primary">
-              Flashcards
-            </Link>
-            <Link to="/youtube-to-quiz" className="hover:text-primary">
-              YouTube → Quiz
-            </Link>
             <a href="#features" className="hover:text-primary">
               Features
             </a>
+            <Link to="/auth" className="hover:text-primary">
+              Login
+            </Link>
           </nav>
           <div className="flex items-center gap-2">
-            <Link to="/auth" className="hidden md:inline-flex">
+            <Link to="/auth" search={{ mode: "signup" } as never} className="hidden md:inline-flex">
               <Button className="rounded-xl bg-primary text-primary-foreground shadow-pop hover:bg-primary/90">
-                Register <ArrowRight className="ml-1 h-4 w-4" />
+                Get Started <ArrowRight className="ml-1 h-4 w-4" />
               </Button>
             </Link>
             <button
@@ -154,21 +148,15 @@ function Landing() {
             <a href="#categories" className="text-sm font-semibold hover:text-primary" onClick={() => setMobileOpen(false)}>
               What you can study
             </a>
-            <Link to="/study-guide" className="text-sm font-semibold hover:text-primary" onClick={() => setMobileOpen(false)}>
-              Study Guide
-            </Link>
-            <Link to="/flashcards" className="text-sm font-semibold hover:text-primary" onClick={() => setMobileOpen(false)}>
-              Flashcards
-            </Link>
-            <Link to="/youtube-to-quiz" className="text-sm font-semibold hover:text-primary" onClick={() => setMobileOpen(false)}>
-              YouTube → Quiz
-            </Link>
             <a href="#features" className="text-sm font-semibold hover:text-primary" onClick={() => setMobileOpen(false)}>
               Features
             </a>
-            <Link to="/auth" onClick={() => setMobileOpen(false)}>
+            <Link to="/auth" className="text-sm font-semibold hover:text-primary" onClick={() => setMobileOpen(false)}>
+              Login
+            </Link>
+            <Link to="/auth" search={{ mode: "signup" } as never} onClick={() => setMobileOpen(false)}>
               <Button className="w-full rounded-xl bg-primary text-primary-foreground shadow-pop hover:bg-primary/90">
-                Register <ArrowRight className="ml-1 h-4 w-4" />
+                Get Started <ArrowRight className="ml-1 h-4 w-4" />
               </Button>
             </Link>
           </nav>

@@ -1,4 +1,4 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { useServerFn } from "@tanstack/react-start";
 import { generateFlashcards, type Flashcard } from "@/lib/flashcards.functions";
@@ -8,41 +8,26 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
-import { Sparkles, FileUp, ArrowRight, RotateCw, ChevronLeft, ChevronRight } from "lucide-react";
+import { Sparkles, FileUp, RotateCw, ChevronLeft, ChevronRight } from "lucide-react";
 
-export const Route = createFileRoute("/flashcards")({
+export const Route = createFileRoute("/_authenticated/flashcards")({
   head: () => ({
     meta: [
-      { title: "Free AI Flashcard Maker — QuizGen" },
+      { title: "AI Flashcard Maker — QuizGen" },
       {
         name: "description",
         content:
-          "Free AI flashcard maker. Paste notes or upload a PDF and generate study flashcards for active recall in seconds.",
+          "AI flashcard maker. Paste notes or upload a PDF and generate study flashcards for active recall in seconds.",
       },
-      { property: "og:title", content: "Free AI Flashcard Maker — QuizGen" },
+      { property: "og:title", content: "AI Flashcard Maker — QuizGen" },
       {
         property: "og:description",
-        content: "Turn notes or PDFs into AI flashcards instantly. Free, no signup.",
+        content: "Turn notes or PDFs into AI flashcards instantly.",
       },
-      { property: "og:url", content: "https://worker-devloper.lovable.app/flashcards" },
+      { property: "og:url", content: "https://lnct-tech-bharat.lovable.app/flashcards" },
+      { name: "robots", content: "noindex" },
     ],
-    links: [{ rel: "canonical", href: "https://worker-devloper.lovable.app/flashcards" }],
-    scripts: [
-      {
-        type: "application/ld+json",
-        children: JSON.stringify({
-          "@context": "https://schema.org",
-          "@type": "WebApplication",
-          name: "QuizGen Flashcard Maker",
-          applicationCategory: "EducationApplication",
-          operatingSystem: "Web",
-          url: "https://worker-devloper.lovable.app/flashcards",
-          description:
-            "Free AI flashcard maker. Generate study flashcards from notes or PDFs for active recall.",
-          offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
-        }),
-      },
-    ],
+    links: [{ rel: "canonical", href: "https://lnct-tech-bharat.lovable.app/flashcards" }],
   }),
   component: FlashcardsPage,
 });
@@ -99,31 +84,10 @@ function FlashcardsPage() {
   const card = cards[idx];
 
   return (
-    <div className="min-h-screen">
-      <div className="h-9 bg-gradient-primary" />
-      <header className="mx-auto flex max-w-6xl items-center justify-between px-4 py-5">
-        <Link to="/" className="flex items-center gap-2 font-display text-xl font-extrabold">
-          <span className="grid h-10 w-10 place-items-center rounded-2xl bg-gradient-primary text-primary-foreground shadow-pop">
-            <Sparkles className="h-5 w-5" />
-          </span>
-          QuizGen
-        </Link>
-        <nav className="hidden items-center gap-7 text-sm font-semibold text-foreground/80 md:flex">
-          <Link to="/" className="hover:text-primary">Home</Link>
-          <Link to="/study-guide" className="hover:text-primary">Study Guide</Link>
-          <Link to="/flashcards" className="text-primary">Flashcards</Link>
-          <Link to="/youtube-to-quiz" className="hover:text-primary">YouTube → Quiz</Link>
-        </nav>
-        <Link to="/auth">
-          <Button className="rounded-xl bg-primary text-primary-foreground shadow-pop hover:bg-primary/90">
-            Sign in <ArrowRight className="ml-1 h-4 w-4" />
-          </Button>
-        </Link>
-      </header>
-
-      <section className="mx-auto max-w-4xl px-4 pt-6 pb-10 text-center">
+    <div className="space-y-8">
+      <section className="text-center">
         <span className="inline-flex items-center gap-2 rounded-full bg-tint-mint px-3 py-1 text-xs font-bold text-primary">
-          <Sparkles className="h-3 w-3" /> Free · No signup
+          <Sparkles className="h-3 w-3" /> AI-Powered
         </span>
         <h1 className="mt-4 font-display text-4xl font-black leading-tight md:text-5xl">
           AI <span className="text-primary">Flashcard Maker</span>
@@ -134,7 +98,7 @@ function FlashcardsPage() {
         </p>
       </section>
 
-      <section className="mx-auto max-w-4xl px-4 pb-10">
+      <section className="mx-auto max-w-4xl">
         <form
           onSubmit={handleSubmit}
           className="rounded-[2rem] border border-border bg-card p-6 shadow-soft md:p-8"
@@ -206,7 +170,7 @@ function FlashcardsPage() {
       </section>
 
       {cards.length > 0 && card && (
-        <section className="mx-auto max-w-3xl px-4 pb-16" aria-live="polite">
+        <section className="mx-auto max-w-3xl" aria-live="polite">
           <div className="mb-4 flex items-center justify-between">
             <h2 className="font-display text-2xl font-black">{title}</h2>
             <span className="text-sm font-semibold text-muted-foreground">
@@ -261,10 +225,6 @@ function FlashcardsPage() {
           </div>
         </section>
       )}
-
-      <footer className="border-t border-border/60 py-8 text-center text-sm text-muted-foreground">
-        <p>© {new Date().getFullYear()} QuizGen · Study smarter, not longer.</p>
-      </footer>
     </div>
   );
 }
