@@ -1,4 +1,5 @@
 import { createServerFn } from "@tanstack/react-start";
+import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 import { z } from "zod";
 import { generateObject } from "ai";
 import { createLovableAiGatewayProvider } from "./ai-gateway.server";
@@ -42,6 +43,7 @@ const StudyGuideSchema = z.object({
 export type StudyGuide = z.infer<typeof StudyGuideSchema>;
 
 export const generateStudyGuide = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
   .validator((input: unknown) => GenerateInput.parse(input))
   .handler(async ({ data }): Promise<StudyGuide> => {
     const key = process.env.LOVABLE_API_KEY;

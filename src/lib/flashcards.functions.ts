@@ -1,4 +1,5 @@
 import { createServerFn } from "@tanstack/react-start";
+import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 import { z } from "zod";
 import { generateObject } from "ai";
 import { createLovableAiGatewayProvider } from "./ai-gateway.server";
@@ -24,6 +25,7 @@ function trimToWords(text: string, max: number): string {
 }
 
 export const generateFlashcards = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
   .validator((input: unknown) => GenerateInput.parse(input))
   .handler(async ({ data }): Promise<{ title: string; cards: Flashcard[] }> => {
     const key = process.env.LOVABLE_API_KEY;
