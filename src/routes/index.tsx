@@ -15,6 +15,7 @@ import {
   Zap,
   Menu,
   X,
+  Video,
 } from "lucide-react";
 import { motion } from "framer-motion";
 import { useState } from "react";
@@ -70,6 +71,7 @@ const categories = [
   { title: "Textbook Chapters", tint: "bg-tint-purple", icon: BookOpen },
   { title: "Exam Prep", tint: "bg-tint-mint", icon: Target },
   { title: "Quick Revision", tint: "bg-tint-peach", icon: Zap },
+  { title: "YouTube Lectures", tint: "bg-tint-rose", icon: Video },
 ];
 
 const advisors = [
@@ -261,39 +263,39 @@ function Landing() {
       </section>
 
       {/* CATEGORIES */}
-      <section id="categories" className="mx-auto max-w-6xl px-4 py-20">
-        <div className="grid items-start gap-10 md:grid-cols-[1fr_2fr]">
-          <div>
+      <section id="categories" className="mx-auto max-w-6xl px-4 py-24">
+        <div className="grid items-center gap-12 lg:grid-cols-[380px_1fr] lg:gap-16">
+          <div className="flex flex-col items-start text-left">
             <span className="inline-flex items-center gap-2 text-sm font-semibold text-accent">
               <Sparkles className="h-4 w-4" /> What you can study
             </span>
-            <h2 className="mt-3 font-display text-4xl font-black leading-tight">
+            <h2 className="mt-4 font-display text-4xl font-black leading-tight text-foreground md:text-5xl">
               Quizzes from <br /> any kind of notes
             </h2>
-            <p className="mt-3 text-muted-foreground">
+            <p className="mt-4 text-base text-muted-foreground leading-relaxed">
               Drop in PDFs, paste lecture transcripts, or upload your handwritten notes as text.
               We'll generate questions tailored to the material.
             </p>
-            <Link to="/auth" search={{ mode: "signup" } as never}>
-              <Button className="mt-5 rounded-xl bg-primary text-primary-foreground shadow-pop hover:bg-primary/90">
-                Try a category <ArrowRight className="ml-2 h-4 w-4" />
+            <Link to="/auth" search={{ mode: "signup" } as never} className="mt-6">
+              <Button size="lg" className="rounded-xl bg-primary px-6 text-primary-foreground shadow-pop hover:bg-primary/90">
+                Try a category <ArrowRight className="ml-2 h-5 w-5" />
               </Button>
             </Link>
           </div>
-          <div className="grid grid-cols-2 gap-4 md:grid-cols-3">
+          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 lg:gap-8">
             {categories.map(({ title, tint, icon: Icon }, i) => (
               <motion.div
                 key={title}
-                initial={{ opacity: 0, y: 16 }}
+                initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.4, delay: i * 0.06 }}
-                className={`group flex aspect-square flex-col items-center justify-center rounded-3xl ${tint} p-6 text-center shadow-soft transition-transform hover:-translate-y-1`}
+                transition={{ duration: 0.5, delay: i * 0.08 }}
+                className={`group flex aspect-square w-full flex-col items-center justify-center rounded-[2.25rem] ${tint} p-6 text-center shadow-soft transition-all duration-250 ease-in-out hover:-translate-y-1.5 hover:shadow-[0_20px_40px_-15px_rgba(107,70,193,0.15)] cursor-pointer`}
               >
-                <div className="grid h-16 w-16 place-items-center rounded-2xl bg-white/70 shadow-soft">
-                  <Icon className="h-8 w-8 text-primary" />
+                <div className="flex h-24 w-24 items-center justify-center rounded-[1.75rem] bg-white/70 shadow-soft transition-transform duration-250 group-hover:scale-105">
+                  <Icon className="h-11 w-11 text-primary" />
                 </div>
-                <p className="mt-4 text-sm font-bold text-foreground">{title}</p>
+                <p className="mt-5 text-base font-extrabold text-foreground tracking-tight">{title}</p>
               </motion.div>
             ))}
           </div>

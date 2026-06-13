@@ -41,3 +41,5 @@ env
 
 # Backup files
 gitignore
+.vercel
+.env*.local
